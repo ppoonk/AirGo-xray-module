@@ -1,0 +1,11 @@
+
+.DS_Store
+server/airgo.db
+server/config.json
+server/router/dist
+server/logs
+server/temp.sh
+server/xray-1
+server/xray
+server/geoip.dat
+server/geosite.dat
