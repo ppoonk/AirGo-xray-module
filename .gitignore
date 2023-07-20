@@ -3,6 +3,7 @@
 server/airgo.db
 server/config.json
 server/router/dist
+server/router/web
 server/logs
 server/temp.sh
 server/xray-1
