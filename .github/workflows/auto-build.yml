@@ -27,7 +27,7 @@ jobs:
           cd web
           npm install
           npm run build
-          mv dist ../server/router
+          mv web ../server/router
       - name: Go dependence
         run: |
           cd server
