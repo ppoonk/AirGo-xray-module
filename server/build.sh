@@ -1,7 +1,7 @@
 cd ../web
 npm i
 npm run build
-mv dist ../server/router
+mv web ../server/router
 cd ../server
 sudo apt update -y
 sudo apt install gcc-aarch64-linux-gnu -y

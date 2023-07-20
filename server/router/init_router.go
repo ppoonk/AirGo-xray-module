@@ -27,7 +27,7 @@ type Resource struct {
 func NewResource() *Resource {
 	return &Resource{
 		fs:   f,
-		path: "dist",
+		path: "web",
 	}
 }
 
@@ -40,13 +40,13 @@ func (r *Resource) Open(name string) (fs.File, error) {
 	return file, err
 }
 
-//go:embed all:dist/*
+//go:embed all:web/*
 var f embed.FS
 
 // 初始化总路由
 func InitRouter() {
 	Router := gin.Default()
-	Router.StaticFS("/dist", http.FS(NewResource()))
+	Router.StaticFS("/web", http.FS(NewResource()))
 	Router.Use(middleware.Cors())
 	r := Router.Group("/")
 	{

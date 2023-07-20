@@ -89,7 +89,6 @@ export const useSubStore = defineStore('subStore', {
         },
         //查询进程状态
         async getProcessStatus() {
-            this.xrayStatus = false
             const res = await subscribeApi.getProcessStatus({shell: "xray"})
             if (res.code===1) {
                 this.xrayStatus = false
