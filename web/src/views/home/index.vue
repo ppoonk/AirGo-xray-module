@@ -268,7 +268,7 @@ const onStopService = () => {
   subStoreData.isLoadingService.value=true
   subscribeApi.stopService().then((res) => {
     if (res.code === 0) {
-      ElMessage.success(res.msg)
+      // ElMessage.success(res.msg)
       subStore.getProcessStatus()
     }
   })

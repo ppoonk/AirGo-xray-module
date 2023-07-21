@@ -80,7 +80,6 @@ func (s *Shell) DoShell(sh string, outType bool) (string, error) {
 func (s *Shell) GetProcessStatus() (string, error) {
 	switch runtime.GOOS {
 	case "linux":
-		global.Logrus.Info("查询进程状态:", xrayStatus)
 		return s.DoShell(xrayStatus, true)
 	default:
 		return s.DoShell(xrayStatusDarwin, true)

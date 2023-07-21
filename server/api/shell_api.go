@@ -70,28 +70,28 @@ func GetProcessStatus(ctx *gin.Context) {
 	var sh model.Shell
 	err := ctx.ShouldBind(&sh)
 	if err != nil {
-		global.Logrus.Error("查询进程状态错误:", err.Error())
+		//global.Logrus.Error("查询进程状态错误:", err.Error())
 		response.Fail("查询进程状态错误:"+err.Error(), nil, ctx)
 		return
 	}
-	out, err := sh.GetProcessStatus()
-	global.Logrus.Info("查询进程状态")
-	if err != nil {
-		if err.Error() == "exit status 1" {
-			response.Fail(sh.Shell+"未启动:"+err.Error(), nil, ctx)
-			return
-		} else {
-			global.Logrus.Error("查询进程状态错误:", err.Error())
-			response.Fail("查询进程状态错误:"+err.Error(), nil, ctx)
-			return
-		}
-	}
-	if len(out) > 2 {
-		response.OK("查询进程状态成功", out, ctx)
+	out, _ := sh.GetProcessStatus()
+	//global.Logrus.Info("查询进程状态")
+	//if err != nil {
+	//	if err.Error() == "exit status 1" {
+	//		response.OK(sh.Shell+"未启动", "", ctx)
+	//		return
+	//	} else {
+	//		//global.Logrus.Error("查询进程状态错误:", err.Error())
+	//		response.Fail("查询进程状态错误:"+err.Error(), nil, ctx)
+	//		return
+	//	}
+	//}
+	if len(out) > 3 {
+		response.OK(sh.Shell+"启动", out, ctx)
 		return
 
 	} else {
-		response.Fail(sh.Shell+"未启动", nil, ctx)
+		response.OK(sh.Shell+"未启动", "", ctx)
 		return
 	}
 
