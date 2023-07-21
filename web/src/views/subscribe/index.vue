@@ -36,10 +36,11 @@
           <div style="font-weight: bold">{{ v.remarks }}</div>
           <div>
             <el-row>
-              <el-col :span="12"></el-col>
-              <el-col :span="6" style="text-align: right">
+              <el-col :span="16"></el-col>
+              <el-col :span="2" style="text-align: right">
                 <el-dropdown>
-                  <SvgIcon name="fa fa-paper-plane-o"/>
+<!--                  <SvgIcon name="fa fa-paper-plane-o"/>-->
+                  <el-icon><Position /></el-icon>
                   <template #dropdown>
                     <el-dropdown-menu>
                       <el-dropdown-item @click="onJoinNodePool(v,'domestic')">加入国内节点池</el-dropdown-item>
@@ -48,8 +49,10 @@
                   </template>
                 </el-dropdown>
               </el-col>
-              <el-col :span="6" style="text-align: right" @click="onDeleteNode({id:v.id})">
-                <SvgIcon name="fa fa-trash-o"/>
+              <el-col :span="4"></el-col>
+              <el-col :span="2" style="text-align: right" @click="onDeleteNode({id:v.id})">
+<!--                <SvgIcon name="fa fa-trash-o"/>-->
+                <el-icon><CloseBold /></el-icon>
               </el-col>
             </el-row>
           </div>
@@ -187,12 +190,22 @@ const onDeleteSub = (params: object) => {
 }
 //删除节点
 const onDeleteNode = (params: object) => {
-  subscribeApi.deleteNode(params).then((res) => {
-    if (res.code === 0) {
-      ElMessage.success(res.msg)
-      getSubNode(checkedSubId.value)
-    }
+  ElMessageBox.confirm(`此操作将删除节点：是否继续?`, '提示', {
+    confirmButtonText: '删除',
+    cancelButtonText: '取消',
+    type: 'warning',
   })
+      .then(() => {
+        //逻辑
+        subscribeApi.deleteNode(params).then((res) => {
+          if (res.code === 0) {
+            ElMessage.success(res.msg)
+            getSubNode(checkedSubId.value)
+          }
+        })
+      })
+      .catch(() => {
+      });
 }
 //加入节点池
 const onJoinNodePool = (node: NodeInfo, type: string) => {

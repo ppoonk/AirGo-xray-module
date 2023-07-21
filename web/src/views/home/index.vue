@@ -8,8 +8,8 @@
           <el-col :span="3">xray</el-col>
           <el-col :span="1"></el-col>
           <el-col :span="18">
-            <span v-if="subStoreData.xrayStatus.value"><SvgIcon style="color: #32a99e" name="fa fa-check"></SvgIcon>正在运行>>></span>
-            <span v-else><SvgIcon style="color: red" name="fa fa-remove"></SvgIcon>已停止</span>
+            <span v-if="subStoreData.xrayStatus.value"><el-icon color="green"><Select /></el-icon>正在运行>>></span>
+            <span v-else><el-icon color="red"><CloseBold /></el-icon>已停止</span>
           </el-col>
         </el-row>
       </div>
@@ -105,7 +105,8 @@
           <el-collapse-item name="1" >
             <template  #title>
               <div style="background: rgba(250,204,171,0.15);width: 100%">
-                <SvgIcon style="color: red" name="fa fa-flag"/>
+<!--                <SvgIcon style="color: red" name="fa fa-flag"/>-->
+                <el-icon color="red"><StarFilled /></el-icon>
                 国内节点池
               </div>
             </template>
@@ -127,15 +128,20 @@
                   <div style="font-weight: bold">{{ v.remarks }}</div>
                   <div>
                     <el-row>
-                      <el-col :span="12"></el-col>
-                      <el-col :span="4" style="text-align: right" @click="onSetEnabledNode(v)">
-                        <SvgIcon name="fa fa-paper-plane-o"/>
+                      <el-col :span="10"></el-col>
+                      <el-col :span="2" style="text-align: right" @click="onSetEnabledNode(v)">
+<!--                        <SvgIcon name="fa fa-paper-plane-o"/>-->
+                        <el-icon><Position /></el-icon>
                       </el-col>
-                      <el-col :span="4" style="text-align: right" @click="onOpenDialog(v)">
-                        <SvgIcon name="fa fa-edit"/>
+                      <el-col :span="4"></el-col>
+                      <el-col :span="2" style="text-align: right" @click="onOpenDialog(v)">
+<!--                        <SvgIcon name="fa fa-edit"/>-->
+                        <el-icon><EditPen /></el-icon>
                       </el-col>
-                      <el-col :span="4" style="text-align: right" @click="onDeleteNodePool(v)">
-                        <SvgIcon name="fa fa-trash-o"/>
+                      <el-col :span="4"></el-col>
+                      <el-col :span="2" style="text-align: right" @click="onDeleteNodePool(v)">
+<!--                        <SvgIcon name="fa fa-trash-o"/>-->
+                        <el-icon><CloseBold /></el-icon>
                       </el-col>
                     </el-row>
                   </div>
@@ -147,7 +153,8 @@
           <el-collapse-item name="2">
             <template #title>
               <div style="background: rgba(164,220,250,0.15);width: 100%">
-                <SvgIcon style="color: #626aef" name="fa fa-flag"/>
+<!--                <SvgIcon style="color: #626aef" name="fa fa-flag"/>-->
+                <el-icon color="blue"><StarFilled /></el-icon>
                 国外节点池
                 </div>
             </template>
@@ -169,15 +176,20 @@
                   <div style="font-weight: bold">{{ v.remarks }}</div>
                   <div>
                     <el-row>
-                      <el-col :span="12"></el-col>
-                      <el-col :span="4" style="text-align: right" @click="onSetEnabledNode(v)">
-                        <SvgIcon name="fa fa-paper-plane-o"/>
+                      <el-col :span="10"></el-col>
+                      <el-col :span="2" style="text-align: right" @click="onSetEnabledNode(v)">
+<!--                        <SvgIcon name="fa fa-paper-plane-o"/>-->
+                        <el-icon><Position /></el-icon>
                       </el-col>
-                      <el-col :span="4" style="text-align: right" @click="onOpenDialog(v)">
-                        <SvgIcon name="fa fa-edit"/>
+                      <el-col :span="4"></el-col>
+                      <el-col :span="2" style="text-align: right" @click="onOpenDialog(v)">
+<!--                        <SvgIcon name="fa fa-edit"/>-->
+                        <el-icon><EditPen /></el-icon>
                       </el-col>
-                      <el-col :span="4" style="text-align: right" @click="onDeleteNodePool(v)">
-                        <SvgIcon name="fa fa-trash-o"/>
+                      <el-col :span="4"></el-col>
+                      <el-col :span="2" style="text-align: right" @click="onDeleteNodePool(v)">
+<!--                        <SvgIcon name="fa fa-trash-o"/>-->
+                        <el-icon><CloseBold /></el-icon>
                       </el-col>
                     </el-row>
                   </div>
