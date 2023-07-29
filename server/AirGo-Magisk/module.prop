@@ -1,0 +1,6 @@
+id=AirGo
+name=AirGo
+version=v0.0.4
+versionCode=004
+author=AirGo
+description=xray免流模块，支持vmess，vless，trojan;支持ipv4节点，ipv6节点；国内外分流与自动切换。web管理地址：127.0.0.1:8899/web  QQ群：144545032

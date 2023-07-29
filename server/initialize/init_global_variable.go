@@ -1,11 +1,11 @@
 package initialize
 
 import (
-	"fmt"
 	"github.com/robfig/cron/v3"
 	"github.com/sirupsen/logrus"
 	"io"
 	"os"
+	"runtime"
 	"server/global"
 	"server/model"
 	"server/utils"
@@ -86,5 +86,18 @@ func InitConfig() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("global.Config", global.Config)
+	switch runtime.GOOS {
+	case "darwin":
+		global.Config.OS = "darwin"
+	default:
+		var sh model.Shell
+		out, _ := sh.DoShell(model.GetAndroidVersion, true)
+		if out != "" {
+			global.Config.OS = "android"
+		} else {
+			global.Config.OS = "linux"
+		}
+	}
+	global.Logrus.Info("系统类型：", global.Config.OS)
+	//fmt.Println("global.Config", global.Config)
 }

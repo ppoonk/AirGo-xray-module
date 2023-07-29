@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"server/global"
 	"server/initialize"
 	"server/model"
 	"server/router"
@@ -15,7 +16,12 @@ func main() {
 	flag.Parse()
 	if *start && !*stop { //启动
 		initialize.Initialize() //初始化参数
-		router.InitRouter()     //初始化路由
+		if global.Config.OS != "darwin" {
+			var sh model.Shell
+			sh.DoShell(model.OpenFirewall, false)
+		} //放行防火墙
+		router.InitRouter() //初始化路由
+
 	} else if !*start && *stop { //停止
 		var sh model.Shell
 		sh.StopService()

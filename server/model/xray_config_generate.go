@@ -96,32 +96,68 @@ func routingConfig() interface{} {
 		})
 	}
 	//国外分流
-	switch global.Config.AbroadType { //国外分流
-	case "proxy":
-		rules = append(rules, map[string]interface{}{
-			"type": "field",
-			"domain": []string{
-				"geosite:google",
-				"geosite:facebook",
-				"geosite:twitter",
-				"geosite:telegram",
-				"geosite:geolocation-!cn",
-			},
-			"outboundTag": "abroad",
-		})
-	default: //设置出站直连
-		rules = append(rules, map[string]interface{}{
-			"type": "field",
-			"domain": []string{
-				"geosite:google",
-				"geosite:facebook",
-				"geosite:twitter",
-				"geosite:telegram",
-				"geosite:geolocation-!cn",
-			},
-			"outboundTag": "direct",
-		})
-	}
+	//switch global.Config.AbroadType { //国外分流
+	//case "proxy":
+	//	rules = append(rules, map[string]interface{}{
+	//		"type": "field",
+	//		"domain": []string{
+	//			"geosite:google",
+	//			"geosite:facebook",
+	//			"geosite:twitter",
+	//			"geosite:telegram",
+	//			"geosite:geolocation-!cn",
+	//		},
+	//		"outboundTag": "abroad",
+	//	})
+	//	rules = append(rules, map[string]interface{}{
+	//		"type": "field",
+	//		"ip": []string{
+	//			"geoip:ae",
+	//			"geoip:au",
+	//			"geoip:br",
+	//			"geoip:ca",
+	//			"geoip:de",
+	//			"geoip:dk",
+	//			"geoip:es",
+	//			"geoip:fi",
+	//			"geoip:fr",
+	//			"geoip:gb",
+	//			"geoip:gr",
+	//			"geoip:hk",
+	//			"geoip:id",
+	//			"geoip:il",
+	//			"geoip:in",
+	//			"geoip:iq",
+	//			"geoip:ir",
+	//			"geoip:it",
+	//			"geoip:jp",
+	//			"geoip:kr",
+	//			"geoip:mo",
+	//			"geoip:my",
+	//			"geoip:nl",
+	//			"geoip:no",
+	//			"geoip:nz",
+	//			"geoip:ph",
+	//			"geoip:ru",
+	//			"geoip:sa",
+	//			"geoip:sg",
+	//			"geoip:th",
+	//			"geoip:tr",
+	//			"geoip:tw",
+	//			"geoip:us",
+	//			"geoip:vn",
+	//		},
+	//		"outboundTag": "abroad",
+	//	})
+	//default: //设置出站直连
+	//	rules = append(rules, map[string]interface{}{
+	//		"type": "field",
+	//		"domain": []string{
+	//			"geosite:geolocation-!cn",
+	//		},
+	//		"outboundTag": "direct",
+	//	})
+	//}
 	return map[string]interface{}{
 		"domainStrategy": "IPIfNonMatch",
 		"domainMatcher":  "hybrid",
@@ -132,19 +168,6 @@ func routingConfig() interface{} {
 // 出站
 func outboundConfig() interface{} {
 	out := make([]interface{}, 0)
-	//国内分流
-	switch global.Config.DomesticType {
-	case "proxy": //获取国内激活节点
-		var node = &Node{Ascription: "domestic"}
-		node, err := node.GetEnabledNodes()
-		node.DomainToIP()
-		if err != nil {
-			return nil
-		}
-		out = append(out, NodeOutBound(node))
-	default: //设置出站直连
-
-	}
 	//国外分流
 	switch global.Config.AbroadType {
 	case "proxy": //获取国外激活节点
@@ -158,6 +181,20 @@ func outboundConfig() interface{} {
 	default: //设置出站直连
 
 	}
+	//国内分流
+	switch global.Config.DomesticType {
+	case "proxy": //获取国内激活节点
+		var node = &Node{Ascription: "domestic"}
+		node, err := node.GetEnabledNodes()
+		node.DomainToIP()
+		if err != nil {
+			return nil
+		}
+		out = append(out, NodeOutBound(node))
+	default: //设置出站直连
+
+	}
+
 	out = append(out, map[string]interface{}{
 		"tag":      "direct",
 		"protocol": "freedom",

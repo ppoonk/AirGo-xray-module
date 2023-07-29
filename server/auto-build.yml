@@ -27,7 +27,7 @@ jobs:
           cd web
           npm install
           npm run build
-          mv dist ../server/router
+          mv web ../server/router
       - name: Go dependence
         run: |
           cd server
@@ -47,8 +47,8 @@ jobs:
             wget -O xray.zip https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-arm32-v7a.zip
             ;;
           esac
-          unzip -d xray-bin/bin xray.zip
-          rm -rf xray-bin/bin/LICENSE xray-bin/bin/README.md
+          unzip -d AirGo-Magisk/bin xray.zip
+          rm -rf AirGo-Magisk/bin/LICENSE AirGo-Magisk/bin/README.md
       - name: Go build
         run: |
           cd server
@@ -68,8 +68,9 @@ jobs:
       - name: Package
         run: |
           cd server
-          mv airgo xray-bin/bin/
-          zip -r AirGo-${{ matrix.goos }}-${{ matrix.goarch }}-${{ steps.get_version.outputs.VERSION }}.zip xray-bin
+          mv airgo AirGo-Magisk/bin/
+          cd AirGo-Magisk
+          zip -r AirGo-Magisk-${{ matrix.goos }}-${{ matrix.goarch }}-${{ steps.get_version.outputs.VERSION }}.zip *
       - name: Upload to release
         uses: svenstaro/upload-release-action@v2
         if: github.event_name == 'release'

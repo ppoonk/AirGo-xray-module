@@ -12,6 +12,7 @@ type Config struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 
+	OS           string `json:"os"`                                  //系统os linux android darwin
 	DomesticType string `json:"domestic_type" gorm:"default:direct"` //国内分流类型，direct直连，proxy代理
 	AbroadType   string `json:"abroad_type"   gorm:"default:direct"` //国外分流类型，direct直连，proxy代理
 
