@@ -51,6 +51,7 @@
           <el-select
               v-model="subStoreData.setting.value.allow_apps"
               multiple
+              filterable
               placeholder="Select"
               style="width: 100%"
           >

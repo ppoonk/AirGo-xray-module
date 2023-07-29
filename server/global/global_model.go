@@ -11,9 +11,10 @@ type ConfigInfo struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 
-	OS           string `json:"os"`                                  //系统os linux android darwin
-	DomesticType string `json:"domestic_type" gorm:"default:direct"` //国内分流类型，direct直连，proxy代理
-	AbroadType   string `json:"abroad_type"   gorm:"default:direct"` //国外分流类型，direct直连，proxy代理
+	OS            string `json:"os"`                                  //系统os linux android darwin
+	ExecutionPath string `json:"execution_path"`                      //执行文件路径
+	DomesticType  string `json:"domestic_type" gorm:"default:direct"` //国内分流类型，direct直连，proxy代理
+	AbroadType    string `json:"abroad_type"   gorm:"default:direct"` //国外分流类型，direct直连，proxy代理
 
 	Host               string `json:"host"`                                                //免流混淆
 	AutoChangeNode     string `json:"auto_change_node" gorm:"default:1"`                   //自动切换节点,1启用

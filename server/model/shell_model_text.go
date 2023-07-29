@@ -1,7 +1,7 @@
 package model
 
 // 获取安卓版本
-const GetAndroidVersion = "shell getprop ro.build.version.release"
+const GetAndroidVersion = "getprop ro.build.version.release"
 
 // 获取全部包名
 const allPackages = "pm list packages"

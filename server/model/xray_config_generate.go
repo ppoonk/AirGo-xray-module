@@ -1,6 +1,7 @@
 package model
 
 import (
+	"path/filepath"
 	"runtime"
 	"server/global"
 	"server/utils"
@@ -17,8 +18,7 @@ func GenerateConfig() error {
 		"dns":     dnsConfig(),
 		"routing": routingConfig(),
 	}
-	//path := filepath.Join("/Users/luster/Downloads/2-go/1-11-v2模块/server", "config.json")
-	path := "./config.json"
+	path := filepath.Join(global.Config.ExecutionPath, "config.json")
 	err := utils.WriteJSON(conf, path)
 	if err != nil {
 		//panic(err)

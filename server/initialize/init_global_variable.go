@@ -5,6 +5,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"io"
 	"os"
+	"path/filepath"
 	"runtime"
 	"server/global"
 	"server/model"
@@ -92,6 +93,7 @@ func InitConfig() {
 	default:
 		var sh model.Shell
 		out, _ := sh.DoShell(model.GetAndroidVersion, true)
+		global.Logrus.Info("out:", out)
 		if out != "" {
 			global.Config.OS = "android"
 		} else {
@@ -99,5 +101,7 @@ func InitConfig() {
 		}
 	}
 	global.Logrus.Info("系统类型：", global.Config.OS)
-	//fmt.Println("global.Config", global.Config)
+	ex, _ := os.Executable()
+	global.Config.ExecutionPath = filepath.Dir(ex)
+	global.Logrus.Info("执行目录：", global.Config.ExecutionPath)
 }
