@@ -12,6 +12,7 @@ import (
 func InitGormSqlite() *gorm.DB {
 
 	path := filepath.Join(global.Config.ExecutionPath, "airgo.db")
+	global.Logrus.Info("数据库路径:", path)
 	if db, err := gorm.Open(sqlite.Open(path), &gorm.Config{
 		SkipDefaultTransaction: true, //关闭事务，将获得大约 30%+ 性能提升
 		NamingStrategy: schema.NamingStrategy{
