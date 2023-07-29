@@ -13,15 +13,16 @@ import (
 )
 
 func Initialize() {
-	global.DB = InitGormSqlite() //连接数据库
 	global.Logrus = InitLogrus() //初始化logrus
+	global.DB = InitGormSqlite() //连接数据库
 	if global.DB != nil {        //初始化数据库
 		RegisterTables()
 		InsertInto()
 	}
+	InitConfig()  //初始化配置
 	NodeCrontab() //节点连通性检测定时任务
 	//InitClientAndDialer() //初始化http.Client,net.Dialer
-	InitConfig() //初始化配置
+
 }
 
 //func InitClientAndDialer() {
