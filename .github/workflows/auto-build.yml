@@ -69,13 +69,13 @@ jobs:
         run: |
           cd server
           mv airgo AirGo-Magisk/AirGo/bin/
-          cd AirGo-Magisk/AirGo
+          cd AirGo-Magisk
           zip -r AirGo-Magisk-${{ matrix.goos }}-${{ matrix.goarch }}-${{ steps.get_version.outputs.VERSION }}.zip *
       - name: Upload to release
         uses: svenstaro/upload-release-action@v2
         if: github.event_name == 'release'
         with:
           repo_token: ${{ secrets.Action_Token }}
-          file: server/AirGo-Magisk/AirGo/AirGo-Magisk-${{ matrix.goos }}-${{ matrix.goarch }}-${{ steps.get_version.outputs.VERSION }}.zip
+          file: server/AirGo-Magisk/AirGo-Magisk-${{ matrix.goos }}-${{ matrix.goarch }}-${{ steps.get_version.outputs.VERSION }}.zip
           tag: ${{ github.ref }}
           file_glob: true
