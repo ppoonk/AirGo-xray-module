@@ -12,14 +12,7 @@ umask 022
 TMPDIR=/dev/tmp
 PERSISTDIR=/sbin/.magisk/mirror/persist
 
-$BOOTMODE && MODDIRNAME=modules_update || MODDIRNAME=modules
-MODULEROOT=$NVBASE/$MODDIRNAME
-MODID=`grep_prop id $TMPDIR/module.prop`
-MODPATH=$MODULEROOT/$MODID
-MODNAME=`grep_prop name $TMPDIR/module.prop`
-MODAUTHOR=`grep_prop author $TMPDIR/module.prop`
-MODVERSION="`grep_prop version $TMPDIR/module.prop`"
-MODDESCRIPTTION="`grep_prop description $TMPDIR/module.prop`"
+
 
 rm -rf $TMPDIR 2>/dev/null
 mkdir -p $TMPDIR
@@ -67,6 +60,7 @@ mount /data 2>/dev/null
 . /data/adb/magisk/util_functions.sh
 [ $MAGISK_VER_CODE -gt 18100 ] || require_new_magisk
 
+
 # 准备卡刷 zip 包
 setup_flashable
 
@@ -86,6 +80,15 @@ $BOOTMODE && boot_actions || recovery_actions
 # 提取公共文件
 unzip -o "$ZIPFILE" module.prop -d $TMPDIR >&2
 [ ! -f $TMPDIR/module.prop ] && abort "! 从 zip 中提取文件失败!"
+
+$BOOTMODE && MODDIRNAME=modules_update || MODDIRNAME=modules
+MODULEROOT=$NVBASE/$MODDIRNAME
+MODID=`grep_prop id $TMPDIR/module.prop`
+MODPATH=$MODULEROOT/$MODID
+MODNAME=`grep_prop name $TMPDIR/module.prop`
+MODAUTHOR=`grep_prop author $TMPDIR/module.prop`
+MODVERSION="`grep_prop version $TMPDIR/module.prop`"
+MODDESCRIPTTION="`grep_prop description $TMPDIR/module.prop`"
 
 
 # 创建模块路径
