@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"golang.org/x/net/context"
@@ -95,6 +96,7 @@ func ClientWithDNS(dns string, timeOut time.Duration) *http.Client {
 			TLSHandshakeTimeout:   10 * time.Second,
 			ExpectContinueTimeout: 1 * time.Second,
 			DialContext:           dialer.DialContext,
+			TLSClientConfig:       &tls.Config{InsecureSkipVerify: true}, //设置client信任所有证书
 		},
 	}
 }
