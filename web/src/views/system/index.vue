@@ -31,14 +31,23 @@
                    size="default"
                    style="--el-switch-on-color: #13ce66; --el-switch-off-color: #0aa3f8"></el-switch>
         </el-form-item>
-          <el-form-item label="自动切换节点 (如果自动切换出现问题,请置为关闭状态)">
-            <el-switch v-model="subStoreData.setting.value.auto_change_node" inline-prompt
-                       active-text="开启"
-                       active-value="1"
-                       inactive-text="关闭"
-                       inactive-value="0"
-                       style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"></el-switch>
-          </el-form-item>
+<!--          <el-form-item label="自动切换节点 (如果自动切换出现问题,请置为关闭状态)">-->
+<!--            <el-switch v-model="subStoreData.setting.value.auto_change_node" inline-prompt-->
+<!--                       active-text="开启"-->
+<!--                       active-value="1"-->
+<!--                       inactive-text="关闭"-->
+<!--                       inactive-value="0"-->
+<!--                       style="&#45;&#45;el-switch-on-color: #13ce66; &#45;&#45;el-switch-off-color: #ff4949"></el-switch>-->
+<!--          </el-form-item>-->
+
+        <el-form-item label="节点池工作模式">
+          <el-radio-group v-model="subStoreData.setting.value.node_pool_model">
+            <el-radio-button label="hm">手动切换</el-radio-button>
+            <el-radio-button label="am">自动切换</el-radio-button>
+            <el-radio-button label="bm">负载均衡</el-radio-button>
+          </el-radio-group>
+        </el-form-item>
+
         <el-form-item label="wifi代理">
           <el-switch v-model="subStoreData.setting.value.wifi_proxy" inline-prompt
                      active-text="开启"
@@ -75,7 +84,7 @@
 
 <script lang="ts" setup>
 import {useSubscribeApi} from "/@/api/subscribe";
-import {ElMessage} from "element-plus";
+import {ElMessage,ElMessageBox} from "element-plus";
 
 import {storeToRefs} from "pinia";
 import {useSubStore} from "/@/stores/subStore";
@@ -83,27 +92,32 @@ import {onMounted} from "vue";
 
 const subStore = useSubStore()
 const subStoreData = storeToRefs(subStore)
-
 const subscribeApi = useSubscribeApi()
 
 //保存配置
 const onUpdateConfig = (params: object) => {
   subscribeApi.updateConfig(params).then((res) => {
     if (res.code === 0) {
-      ElMessage.success(res.msg)
       subStore.getConfig() //获取配置
+      ElMessageBox.confirm(`配置已保存：是否立即重启免流核心?`, '提示', {
+        confirmButtonText: '立即重启',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+          .then(() => {
+            //逻辑
+            subscribeApi.stopService().then((res) => {
+              if (res.code === 0) {
+                subscribeApi.startService()
+              }
+            })
+          })
+          .catch(() => {
+          });
     }
   })
 }
-//
-// const onDoShell = (params: object) => {
-//   subscribeApi.doShell(params).then((res) => {
-//     if (res.code === 0) {
-//       ElMessage.success(res.msg)
-//       subStoreData.shellRes.value = res.data
-//     }
-//   })
-// }
+
 onMounted(() => {
   subStore.getAllPackages()//全部包名
   subStore.getConfig() //获取配置

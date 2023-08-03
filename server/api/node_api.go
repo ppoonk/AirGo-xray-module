@@ -3,7 +3,6 @@ package api
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 	"server/global"
 	"server/model"
 	"server/model/response"
@@ -106,8 +105,8 @@ func GetNodePool(ctx *gin.Context) {
 	res, err := node.GetNodePool()
 	if err != nil {
 		global.Logrus.Error("获取节点池错误:", err.Error())
-		response.Fail("获取节点池错误:"+err.Error(), nil, ctx)
-		return
+		//response.Fail("获取节点池错误:"+err.Error(), nil, ctx)
+		//return
 	}
 	response.OK("获取节点池成功", res, ctx)
 }
@@ -160,15 +159,16 @@ func GetEnabledNodes(ctx *gin.Context) {
 	}
 	nodes, err := node.GetEnabledNodes()
 	if err != nil {
-		if err == gorm.ErrRecordNotFound {
-			global.Logrus.Error("未设置活动节点:", err.Error())
-			response.Fail("未设置活动节点", nil, ctx)
-			return
-		} else {
-			global.Logrus.Error("获取激活的节点错误:", err.Error())
-			response.Fail("错误:"+err.Error(), nil, ctx)
-			return
-		}
+		//if err == gorm.ErrRecordNotFound {
+		//	global.Logrus.Error("未设置活动节点:", err.Error())
+		//	response.Fail("未设置活动节点", nil, ctx)
+		//	return
+		//} else {
+		//	global.Logrus.Error("获取激活的节点错误:", err.Error())
+		//	response.Fail("错误:"+err.Error(), nil, ctx)
+		//	return
+		//}
+		global.Logrus.Error("获取激活的节点，error:", err.Error())
 	}
 	response.OK("获取激活的节点成功", nodes, ctx)
 }

@@ -5,8 +5,6 @@ import (
 	"github.com/sirupsen/logrus"
 	"io"
 	"os"
-	"path/filepath"
-	"runtime"
 	"server/global"
 	"server/model"
 	"server/utils"
@@ -19,10 +17,9 @@ func Initialize() {
 		RegisterTables()
 		InsertInto()
 	}
-	InitConfig()  //初始化配置
-	NodeCrontab() //节点连通性检测定时任务
+	InitConfig()                //初始化配置
+	InitNodeAutoChangeCrontab() //节点连通性检测定时任务
 	//InitClientAndDialer() //初始化http.Client,net.Dialer
-
 }
 
 //func InitClientAndDialer() {
@@ -50,13 +47,9 @@ func InitLogrus() *logrus.Logger {
 }
 
 // 节点连通性检测定时任务
-func NodeCrontab() {
-	c := cron.New(cron.WithSeconds())
-	_, err := c.AddFunc("*/30 * * * * *", func() {
-		if global.Config.AutoChangeNode == "0" {
-			//global.Logrus.Info("AutoChangeNode=", global.Config.AutoChangeNode, "跳过切换节点")
-			return
-		}
+func InitNodeAutoChangeCrontab() {
+	global.NodeAutoChangeCrontab = cron.New(cron.WithSeconds())
+	_, err := global.NodeAutoChangeCrontab.AddFunc("*/30 * * * * *", func() {
 		var sh model.Shell
 		out, err := sh.GetProcessStatus()
 		if len(out) < 3 || err != nil {
@@ -76,33 +69,40 @@ func NodeCrontab() {
 		}
 	})
 	if err != nil {
+		global.NodeAutoChangeCrontab = nil
 		return
 	}
-	global.Logrus.Info("节点连通性检测定时任务")
-	c.Start()
+	//global.NodeAutoChangeCrontab.Start()
+}
+func InitNodeAutoTcpingCrontabs() {
+	global.NodeAutoTcpingCrontab = cron.New(cron.WithSeconds())
+	_, err := global.NodeAutoTcpingCrontab.AddFunc("*/30 * * * * *", func() {
+		var node1 = model.Node{Ascription: "domestic"}
+		var node2 = model.Node{Ascription: "abroad"}
+		nodeArr1, _ := node1.GetNodePool()
+		for _, v := range *nodeArr1 {
+			v.Tcping()
+		}
+		nodeArr2, _ := node2.GetNodePool()
+		for _, v := range *nodeArr2 {
+			v.Tcping()
+		}
+
+	})
+	if err != nil {
+		global.NodeAutoTcpingCrontab = nil
+		return
+	}
+
 }
 
+// 配置文件
 func InitConfig() {
 	var c model.Config
 	err := c.GetConfig()
 	if err != nil {
 		panic(err)
 	}
-	switch runtime.GOOS {
-	case "darwin":
-		global.Config.OS = "darwin"
-	default:
-		var sh model.Shell
-		out, _ := sh.DoShell(model.GetAndroidVersion, true)
-		global.Logrus.Info("out:", out)
-		if out != "" {
-			global.Config.OS = "android"
-		} else {
-			global.Config.OS = "linux"
-		}
-	}
 	global.Logrus.Info("系统类型：", global.Config.OS)
-	ex, _ := os.Executable()
-	global.Config.ExecutionPath = filepath.Dir(ex)
 	global.Logrus.Info("执行目录：", global.Config.ExecutionPath)
 }

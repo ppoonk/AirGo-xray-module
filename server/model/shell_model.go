@@ -88,6 +88,11 @@ func (s *Shell) GetProcessStatus() (string, error) {
 
 // 启动服务
 func (s *Shell) StartService() error {
+	//判断节点池工作模式
+	switch global.Config.NodePoolModel {
+	case "am": //开启自动切换节点
+		global.NodeAutoChangeCrontab.Start()
+	}
 	//生成配置
 	err := GenerateConfig()
 	if err != nil {
@@ -106,6 +111,11 @@ func (s *Shell) StartService() error {
 
 // 关闭服务
 func (s *Shell) StopService() (string, error) {
+	//判断节点池工作模式
+	switch global.Config.NodePoolModel {
+	case "am":
+		global.NodeAutoChangeCrontab.Stop() //关闭自动切换节点
+	}
 	switch runtime.GOOS {
 	case "linux":
 		return s.StopXrayAndroid()

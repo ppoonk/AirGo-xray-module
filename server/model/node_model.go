@@ -253,17 +253,16 @@ func (n *Node) SetEnableNodeToDb() error {
 }
 
 // 获取国内(国外)节点池
-func (n *Node) GetNodePool() (*[]NodePool, error) {
-	var nodePool []NodePool
-	err := global.DB.Where(&NodePool{Ascription: n.Ascription}).Find(&nodePool).Error
+func (n *Node) GetNodePool() (*[]Node, error) {
+	var nodePool []Node
+	err := global.DB.Model(&NodePool{}).Where(&NodePool{Ascription: n.Ascription}).Find(&nodePool).Error
 	return &nodePool, err
 }
 
 // 加入节点池
 func (n *Node) JoinNodePool() error {
-	fmt.Println("加入节点池", n)
 	n.ID = 0
-	return global.DB.Debug().Model(&NodePool{}).Create(&n).Error
+	return global.DB.Model(&NodePool{}).Create(&n).Error
 }
 
 // 从节点池删除节点

@@ -70,8 +70,9 @@
           <el-col :span="3">国内</el-col>
           <el-col :span="1"></el-col>
           <el-col :span="4">
-            <el-button v-if="subStoreData.setting.value.domestic_type==='direct'" color="#0aa3f8">直连</el-button>
-            <el-button v-else color="green">代理</el-button>
+            <el-button v-if="subStoreData.setting.value.domestic_type==='direct' && subStoreData.setting.value.node_pool_model !=='bm'" color="#0aa3f8">直连</el-button>
+            <el-button v-else-if="subStoreData.setting.value.domestic_type==='proxy' && subStoreData.setting.value.node_pool_model !=='bm'" color="green">代理</el-button>
+            <el-button v-else color="green">节点池负载均衡</el-button>
           </el-col>
           <el-col :span="1"></el-col>
           <el-col :span="15" v-if="subStoreData.setting.value.domestic_type==='proxy'" style="color: #ff0000">{{ subStoreData.enabledDomesticNode.value.remarks }}</el-col>
@@ -82,8 +83,9 @@
           <el-col :span="3">国外</el-col>
           <el-col :span="1"></el-col>
           <el-col :span="4">
-            <el-button v-if="subStoreData.setting.value.abroad_type==='direct'" color="#0aa3f8">直连</el-button>
-            <el-button v-else color="green">代理</el-button>
+            <el-button v-if="subStoreData.setting.value.abroad_type==='direct' && subStoreData.setting.value.node_pool_model !=='bm'" color="#0aa3f8">直连</el-button>
+            <el-button v-else-if="subStoreData.setting.value.abroad_type==='proxy' && subStoreData.setting.value.node_pool_model !=='bm'" color="green">代理</el-button>
+            <el-button v-else color="green">节点池负载均衡</el-button>
           </el-col>
           <el-col :span="1"></el-col>
           <el-col :span="15" v-if="subStoreData.setting.value.abroad_type==='proxy'" style="color: #626aef">{{ subStoreData.enabledAbroadNode.value.remarks }}</el-col>
@@ -266,10 +268,8 @@ const getEnabledNodes = () => {
 const onStartService = () => {
   subStoreData.isLoadingService.value=true
   subscribeApi.startService().then((res) => {
-    if (res.code === 0) {
       // ElMessage.success(res.msg)
       subStore.getProcessStatus()
-    }
   })
   setTimeout(()=>{
     subStoreData.isLoadingService.value=false
@@ -279,10 +279,8 @@ const onStartService = () => {
 const onStopService = () => {
   subStoreData.isLoadingService.value=true
   subscribeApi.stopService().then((res) => {
-    if (res.code === 0) {
       // ElMessage.success(res.msg)
       subStore.getProcessStatus()
-    }
   })
   setTimeout(()=>{
     subStoreData.isLoadingService.value=false
@@ -304,11 +302,24 @@ const onSetEnabledNode = (params: NodeInfo) => {
         subscribeApi.setEnabledNode(params)
         setTimeout(() => {
           getEnabledNodes()
-        }, 1000)
-        ElMessage({
-          type: 'success',
-          message: '已完成',
+        }, 500)
+        ElMessageBox.confirm(
+            '活动节点已更改，是否重启免流核心?',
+            'Warning',
+            {
+              confirmButtonText: '立即重启',
+              cancelButtonText: '取消',
+              type: 'warning',
+            }
+        ).then(()=>{
+          //逻辑
+          subscribeApi.stopService().then((res) => {
+            if (res.code === 0) {
+              subscribeApi.startService()
+            }
+          })
         })
+
       })
       .catch(() => {
         ElMessage({
@@ -317,26 +328,9 @@ const onSetEnabledNode = (params: NodeInfo) => {
         })
       })
 }
-// //http延迟测试
-// const testNodeDelay = () => {
-//   subStore.testNodeDelayBaidu();
-//   subStore.testNodeDelayYoutube();
-// };
-// //测试ip
-// const testIP = () => {
-//   subStore.testDomesticIP()
-//   subStore.testAbroadIP()
-// };
-// //测试连通xing
-// const onTest = () => {
-//   testIP()
-//   testNodeDelay()
-// }
-// 节点 tcping
 
 //跳转测试网站
 const toSkk=()=>{
-  // window.location.href="https://ip233.cn/"
   window.open("https://ip.skk.moe/simple/")
 }
 //tcp测试
@@ -357,7 +351,7 @@ onMounted(() => {
   // 获取活动节点
   getEnabledNodes()
   // 获取配置
-  subStore.getAllPackages()//全部包名
+  // subStore.getAllPackages()//全部包名
   subStore.getConfig() //获取配置
 
 });

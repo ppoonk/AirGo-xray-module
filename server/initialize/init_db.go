@@ -4,16 +4,22 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
-	"os"
 	"path/filepath"
+	"runtime"
 	"server/global"
+	"server/utils"
 )
 
 // 初始化sqlite数据库
 func InitGormSqlite() *gorm.DB {
-	ex, _ := os.Executable()
-	path := filepath.Dir(ex)
-	dbpath := filepath.Join(path, "airgo.db")
+	var dbpath string
+
+	switch runtime.GOOS {
+	case "darwin":
+		dbpath = "./airgo.db"
+	default:
+		dbpath = filepath.Join(utils.GetRunPath(), "airgo.db")
+	}
 	global.Logrus.Info("数据库路径:", dbpath)
 	if db, err := gorm.Open(sqlite.Open(dbpath), &gorm.Config{
 		SkipDefaultTransaction: true, //关闭事务，将获得大约 30%+ 性能提升

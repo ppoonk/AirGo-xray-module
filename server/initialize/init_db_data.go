@@ -1,8 +1,10 @@
 package initialize
 
 import (
+	"runtime"
 	"server/global"
 	"server/model"
+	"server/utils"
 )
 
 // 注册数据库表
@@ -36,6 +38,19 @@ func InsertInto() {
 	}
 	//创建配置
 	configData := model.Config{}
+	switch runtime.GOOS {
+	case "darwin":
+		configData.OS = "darwin"
+	default:
+		var sh model.Shell
+		out, _ := sh.DoShell(model.GetAndroidVersion, true)
+		if out != "" {
+			configData.OS = "android"
+		} else {
+			configData.OS = "linux"
+		}
+	}
+	configData.ExecutionPath = utils.GetRunPath()
 	err = global.DB.Create(&configData).Error
 	if err != nil {
 		global.Logrus.Error(err.Error())

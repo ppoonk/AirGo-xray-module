@@ -56,6 +56,7 @@ declare interface Config {
     domestic_type: string;
     abroad_type: string;
     auto_change_node: string;
+    node_pool_model:string;
     host: string;
     wifi_proxy: string;
     ipv6_net: string;

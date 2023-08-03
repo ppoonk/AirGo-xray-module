@@ -69,9 +69,14 @@ jobs:
         run: |
           cd server
           mv airgo AirGo-Magisk/AirGo/bin/
-          cd AirGo-Magisk/AirGo
-#          path="version=${{ steps.get_version.outputs.VERSION }}s"
-#          sed '3c version=v0.0.4'
+          cd AirGo-Magisk
+          version="version=${{ steps.get_version.outputs.VERSION }}"
+          sed '3c ${version}' module.prop
+          vcode=${{ steps.get_version.outputs.VERSION }}
+          vcode=${vcode//v/}
+          vcode=${vcode//./}
+          versioncode="versionCode=${vcode}"
+          sed '4c ${versioncode}' module.prop
           zip -r AirGo-Magisk-${{ matrix.goos }}-${{ matrix.goarch }}-${{ steps.get_version.outputs.VERSION }}.zip *
       - name: Upload to release
         uses: svenstaro/upload-release-action@v2

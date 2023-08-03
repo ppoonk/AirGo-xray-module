@@ -13,12 +13,18 @@ func GenerateConfig() error {
 	var conf = map[string]interface{}{
 		"log":       logConfig(),
 		"inbounds":  inboundsConfig(),
-		"outbounds": outboundConfig(),
+		"outbounds": outboundConfigNew(),
 		//"policy":    policyConfig(),
 		"dns":     dnsConfig(),
-		"routing": routingConfig(),
+		"routing": routingConfigNew(),
 	}
-	path := filepath.Join(global.Config.ExecutionPath, "config.json")
+	var path string
+	switch global.Config.OS {
+	case "darwin":
+		path = "config.json"
+	default:
+		path = filepath.Join(global.Config.ExecutionPath, "config.json")
+	}
 	err := utils.WriteJSON(conf, path)
 	if err != nil {
 		//panic(err)
@@ -234,6 +240,13 @@ func NodeOutBound(n *Node) interface{} {
 
 // Trojan
 func trojanOutbound(trojan Node) interface{} {
+	var tag string
+	switch global.Config.NodePoolModel {
+	case "bm":
+		tag = trojan.Remarks
+	default:
+		tag = trojan.Ascription
+	}
 	streamSettings := map[string]interface{}{
 		"network":  "tcp",
 		"security": "tls",
@@ -243,7 +256,7 @@ func trojanOutbound(trojan Node) interface{} {
 		"serverName":    trojan.Sni,
 	}
 	return map[string]interface{}{
-		"tag":      trojan.Ascription,
+		"tag":      tag,
 		"protocol": "trojan",
 		"settings": map[string]interface{}{
 			"servers": []interface{}{
@@ -261,6 +274,15 @@ func trojanOutbound(trojan Node) interface{} {
 
 // VMess
 func vMessOutbound(n Node) interface{} {
+
+	var tag string
+	switch global.Config.NodePoolModel {
+	case "bm":
+		tag = n.Remarks
+	default:
+		tag = n.Ascription
+	}
+
 	streamSettings := map[string]interface{}{
 		"network":  n.Network,
 		"security": n.Security,
@@ -338,7 +360,7 @@ func vMessOutbound(n Node) interface{} {
 		}
 	}
 	return map[string]interface{}{
-		"tag":      n.Ascription,
+		"tag":      tag,
 		"protocol": "vmess",
 		"settings": map[string]interface{}{
 			"vnext": []interface{}{
@@ -369,6 +391,14 @@ func vLessOutbound(vless Node) interface{} {
 	mux := false
 	security := vless.Security
 	network := vless.Network
+	var tag string
+	switch global.Config.NodePoolModel {
+	case "bm":
+		tag = vless.Remarks
+	default:
+		tag = vless.Ascription
+	}
+
 	user := map[string]interface{}{
 		"id":         vless.UUID,
 		"flow":       vless.VlessFlow,
@@ -481,7 +511,7 @@ func vLessOutbound(vless Node) interface{} {
 		}
 	}
 	return map[string]interface{}{
-		"tag":      vless.Ascription,
+		"tag":      tag,
 		"protocol": "vless",
 		"settings": map[string]interface{}{
 			"vnext": []interface{}{

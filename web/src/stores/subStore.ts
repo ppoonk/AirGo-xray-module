@@ -47,6 +47,7 @@ export const useSubStore = defineStore('subStore', {
             abroad_type: '',
             host: '',
             ipv6_net: '',
+            node_pool_model:'',
             allow_outside_tcp_udp: '',
             allow_apps: [],
         } as Config,

@@ -17,8 +17,9 @@ type Config struct {
 	DomesticType  string `json:"domestic_type" gorm:"default:direct"` //国内分流类型，direct直连，proxy代理
 	AbroadType    string `json:"abroad_type"   gorm:"default:direct"` //国外分流类型，direct直连，proxy代理
 
-	Host               string `json:"host"`                                                //免流混淆
-	AutoChangeNode     string `json:"auto_change_node" gorm:"default:0"`                   //自动切换节点,1启用
+	Host string `json:"host"` //免流混淆
+	//AutoChangeNode     string `json:"auto_change_node" gorm:"default:0"`                   //自动切换节点,1启用
+	NodePoolModel      string `json:"node_pool_model"  gorm:"default:hm"`                  //节点池工作模式，手动（hm）自动（am）负载均衡（bm）
 	WIFIProxy          string `json:"wifi_proxy"       gorm:"default:0;column:wifi_proxy"` //WiFi代理,1代理
 	IPV6Net            string `json:"ipv6_net"         gorm:"default:1;column:ipv6_net"`   //ipv6联网，1联网
 	AllowOutsideTcpUdp string `json:"allow_outside_tcp_udp" gorm:"default:1"`              //放行除tcp,udp外的流量,1放行
