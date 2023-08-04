@@ -53,15 +53,15 @@ jobs:
         run: |
           cd server
           go build -o airgo -ldflags='-s -w --extldflags "-static -fpic"' main.go
-#      - uses: wangyoucao577/go-release-action@v1.38
-#        with:
-#          github_token: ${{ secrets.Action_Token }}
-#          goos: ${{ matrix.goos }}
-#          goarch: ${{ matrix.goarch }}
-#          goversion: 1.19
-#          binary_name: "AirGo"
-#          project_path: "./server"
-#          ldflags: -s -w --extldflags "-static -fpic"
+      #      - uses: wangyoucao577/go-release-action@v1.38
+      #        with:
+      #          github_token: ${{ secrets.Action_Token }}
+      #          goos: ${{ matrix.goos }}
+      #          goarch: ${{ matrix.goarch }}
+      #          goversion: 1.19
+      #          binary_name: "AirGo"
+      #          project_path: "./server"
+      #          ldflags: -s -w --extldflags "-static -fpic"
       - name: Get version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
@@ -70,12 +70,19 @@ jobs:
           cd server
           mv airgo AirGo-Magisk/AirGo/bin/
           cd AirGo-Magisk
+          version="version=${{ steps.get_version.outputs.VERSION }}"
+          sed '3c ${version}' module.prop
+          vcode=${{ steps.get_version.outputs.VERSION }}
+          vcode=${vcode//v/}
+          vcode=${vcode//./}
+          versioncode="versionCode=${vcode}"
+          sed '4c ${versioncode}' module.prop
           zip -r AirGo-Magisk-${{ matrix.goos }}-${{ matrix.goarch }}-${{ steps.get_version.outputs.VERSION }}.zip *
       - name: Upload to release
         uses: svenstaro/upload-release-action@v2
         if: github.event_name == 'release'
         with:
           repo_token: ${{ secrets.Action_Token }}
-          file: server/AirGo-Magisk/AirGo-Magisk-${{ matrix.goos }}-${{ matrix.goarch }}-${{ steps.get_version.outputs.VERSION }}.zip
+          file: server/AirGo-Magisk/AirGo/AirGo-Magisk-${{ matrix.goos }}-${{ matrix.goarch }}-${{ steps.get_version.outputs.VERSION }}.zip
           tag: ${{ github.ref }}
           file_glob: true
