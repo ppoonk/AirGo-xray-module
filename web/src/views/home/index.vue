@@ -3,7 +3,7 @@
     <!--    状态显示开始-->
     <div  class="home-card-item" v-loading.fullscreen="subStoreData.isLoadingService.value">
       <!--      运行状态-->
-      <div >
+      <div class="home-card-item">
         <el-row>
           <el-col :span="3">xray</el-col>
           <el-col :span="1"></el-col>
@@ -13,45 +13,6 @@
           </el-col>
         </el-row>
       </div>
-<!--      &lt;!&ndash;      ip测试&ndash;&gt;-->
-<!--      <div>-->
-<!--        <el-row>-->
-<!--          <el-col :span="11">-->
-<!--            <div class="home-card-item" style="text-align: center;height: 100px">-->
-<!--              <div style="color: #9b9da1">从国内测试</div>-->
-<!--              <div>{{ subStoreData.domesticIP.value.ip }}</div>-->
-<!--              <div>{{ subStoreData.domesticIP.value.location }}</div>-->
-<!--            </div>-->
-<!--          </el-col>-->
-<!--          <el-col :span="2"></el-col>-->
-<!--          <el-col :span="11">-->
-<!--            <div class="home-card-item" style="text-align: center;height: 100px">-->
-<!--              <div style="color: #9b9da1">从国外测试</div>-->
-<!--              <div>{{ subStoreData.abroadIP.value.ip }}</div>-->
-<!--              <div>{{ subStoreData.abroadIP.value.location }}</div>-->
-<!--            </div>-->
-<!--          </el-col>-->
-<!--        </el-row>-->
-<!--      </div>-->
-<!--      &lt;!&ndash;      http延迟测试&ndash;&gt;-->
-<!--      <div>-->
-<!--        <el-row>-->
-<!--          <el-col :span="11">-->
-<!--            <div class="home-card-item" style="text-align: center">-->
-<!--              <el-image :src="baidu" fit="cover" style="height: 50px;"></el-image>-->
-<!--              <div><span style="color: #37cc27">{{ subStore.baiduDelay }}</span>ms</div>-->
-<!--            </div>-->
-<!--          </el-col>-->
-<!--          <el-col :span="2"></el-col>-->
-<!--          <el-col :span="11">-->
-<!--            <div class="home-card-item" style="text-align: center">-->
-<!--              <el-image :src="youtube" fit="cover" style="height: 50px;"></el-image>-->
-<!--              <div><span style="color: #37cc27">{{ subStore.youtubeDelay }}</span>ms</div>-->
-<!--            </div>-->
-<!--          </el-col>-->
-<!--          <el-col></el-col>-->
-<!--        </el-row>-->
-<!--      </div>-->
       <!--      启动，停止，测试按钮-->
       <div class="home-card-item" >
         <el-button :disabled="subStoreData.xrayStatus.value" type="primary" @click="onStartService()" size="small">
@@ -70,12 +31,12 @@
           <el-col :span="3">国内</el-col>
           <el-col :span="1"></el-col>
           <el-col :span="4">
-            <el-button v-if="subStoreData.setting.value.domestic_type==='direct' && subStoreData.setting.value.node_pool_model !=='bm'" color="#0aa3f8">直连</el-button>
-            <el-button v-else-if="subStoreData.setting.value.domestic_type==='proxy' && subStoreData.setting.value.node_pool_model !=='bm'" color="green">代理</el-button>
-            <el-button v-else color="green">节点池负载均衡</el-button>
+            <el-button v-if="subStoreData.setting.value.domestic_type==='direct'" color="#0aa3f8">直连</el-button>
+            <el-button v-else-if="subStoreData.setting.value.domestic_type==='proxy'" color="green">代理</el-button>
           </el-col>
           <el-col :span="1"></el-col>
-          <el-col :span="15" v-if="subStoreData.setting.value.domestic_type==='proxy'" style="color: #ff0000">{{ subStoreData.enabledDomesticNode.value.remarks }}</el-col>
+          <el-col :span="15" v-if="subStoreData.setting.value.domestic_type==='proxy' && subStoreData.setting.value.node_pool_model !=='bm'" style="color: #ff0000">{{ subStoreData.enabledDomesticNode.value.remarks }}</el-col>
+          <el-col :span="15" v-if="subStoreData.setting.value.domestic_type==='proxy' && subStoreData.setting.value.node_pool_model ==='bm'" style="color: #ff0000">负载均衡</el-col>
         </el-row>
       </div>
       <div  class="home-card-item">
@@ -83,24 +44,17 @@
           <el-col :span="3">国外</el-col>
           <el-col :span="1"></el-col>
           <el-col :span="4">
-            <el-button v-if="subStoreData.setting.value.abroad_type==='direct' && subStoreData.setting.value.node_pool_model !=='bm'" color="#0aa3f8">直连</el-button>
-            <el-button v-else-if="subStoreData.setting.value.abroad_type==='proxy' && subStoreData.setting.value.node_pool_model !=='bm'" color="green">代理</el-button>
+            <el-button v-if="subStoreData.setting.value.abroad_type==='direct'" color="#0aa3f8">直连</el-button>
+            <el-button v-else-if="subStoreData.setting.value.abroad_type==='proxy'" color="green">代理</el-button>
             <el-button v-else color="green">节点池负载均衡</el-button>
           </el-col>
           <el-col :span="1"></el-col>
-          <el-col :span="15" v-if="subStoreData.setting.value.abroad_type==='proxy'" style="color: #626aef">{{ subStoreData.enabledAbroadNode.value.remarks }}</el-col>
+          <el-col :span="15" v-if="subStoreData.setting.value.abroad_type==='proxy' && subStoreData.setting.value.node_pool_model !=='bm'" style="color: #626aef">{{ subStoreData.enabledAbroadNode.value.remarks }}</el-col>
+          <el-col :span="15" v-if="subStoreData.setting.value.abroad_type==='proxy' && subStoreData.setting.value.node_pool_model ==='bm'" style="color: #626aef">负载均衡</el-col>
         </el-row>
       </div>
       <!--      节点池开始-->
       <el-divider>节点池
-        <el-tooltip placement="top">
-          <template #content>
-            自动检测当前节点连通性<br/>
-            1）如果无法连通，则尝试选择节点池中延迟最小的节点连接<br/>
-            2）如果自动切换出现问题，您可在设置中将`自动切换节点`置为关闭状态
-          </template>
-          <el-button size="small">如何工作?</el-button>
-        </el-tooltip>
       </el-divider>
       <div>
         <el-collapse accordion>
@@ -267,8 +221,7 @@ const getEnabledNodes = () => {
 //启动服务
 const onStartService = () => {
   subStoreData.isLoadingService.value=true
-  subscribeApi.startService().then((res) => {
-      // ElMessage.success(res.msg)
+  subscribeApi.startService().then(() => {
       subStore.getProcessStatus()
   })
   setTimeout(()=>{
@@ -278,8 +231,7 @@ const onStartService = () => {
 //关闭服务
 const onStopService = () => {
   subStoreData.isLoadingService.value=true
-  subscribeApi.stopService().then((res) => {
-      // ElMessage.success(res.msg)
+  subscribeApi.stopService().then(() => {
       subStore.getProcessStatus()
   })
   setTimeout(()=>{
@@ -303,22 +255,24 @@ const onSetEnabledNode = (params: NodeInfo) => {
         setTimeout(() => {
           getEnabledNodes()
         }, 500)
-        ElMessageBox.confirm(
-            '活动节点已更改，是否重启免流核心?',
-            'Warning',
-            {
-              confirmButtonText: '立即重启',
-              cancelButtonText: '取消',
-              type: 'warning',
-            }
-        ).then(()=>{
-          //逻辑
-          subscribeApi.stopService().then((res) => {
-            if (res.code === 0) {
-              subscribeApi.startService()
-            }
+        if (subStoreData.xrayStatus.value){
+          ElMessageBox.confirm(
+              '活动节点已更改，是否重启免流核心?',
+              'Warning',
+              {
+                confirmButtonText: '立即重启',
+                cancelButtonText: '取消',
+                type: 'warning',
+              }
+          ).then(()=>{
+            //逻辑
+            subscribeApi.stopService().then((res) => {
+              if (res.code === 0) {
+                subscribeApi.startService()
+              }
+            })
           })
-        })
+        }
 
       })
       .catch(() => {

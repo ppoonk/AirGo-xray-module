@@ -155,7 +155,7 @@ func (s *Shell) StartXrayAndroid() (string, error) {
 	//执行规则
 	_, err = s.DoShell(r, false)
 	if err != nil {
-		os.WriteFile("start-rules-temp.sh", []byte(r), 0777)
+		//os.WriteFile("start-rules-temp.sh", []byte(r), 0777)
 		s.DoShell(stopXray, false)
 		s.DoShell(clearRules, false)
 		global.Logrus.Error("StartXrayAndroid,startRules错误:", err.Error())
