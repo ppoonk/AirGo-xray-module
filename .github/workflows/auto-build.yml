@@ -83,6 +83,6 @@ jobs:
         if: github.event_name == 'release'
         with:
           repo_token: ${{ secrets.Action_Token }}
-          file: server/AirGo-Magisk/AirGo/AirGo-Magisk-${{ matrix.goos }}-${{ matrix.goarch }}-${{ steps.get_version.outputs.VERSION }}.zip
+          file: server/AirGo-Magisk/AirGo-Magisk-${{ matrix.goos }}-${{ matrix.goarch }}-${{ steps.get_version.outputs.VERSION }}.zip
           tag: ${{ github.ref }}
           file_glob: true
