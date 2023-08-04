@@ -32,7 +32,7 @@
           <el-col :span="1"></el-col>
           <el-col :span="4">
             <el-button v-if="subStoreData.setting.value.domestic_type==='direct'" color="#0aa3f8">直连</el-button>
-            <el-button v-else-if="subStoreData.setting.value.domestic_type==='proxy'" color="green">代理</el-button>
+            <el-button v-if="subStoreData.setting.value.domestic_type==='proxy'" color="green">代理</el-button>
           </el-col>
           <el-col :span="1"></el-col>
           <el-col :span="15" v-if="subStoreData.setting.value.domestic_type==='proxy' && subStoreData.setting.value.node_pool_model !=='bm'" style="color: #ff0000">{{ subStoreData.enabledDomesticNode.value.remarks }}</el-col>
@@ -45,8 +45,7 @@
           <el-col :span="1"></el-col>
           <el-col :span="4">
             <el-button v-if="subStoreData.setting.value.abroad_type==='direct'" color="#0aa3f8">直连</el-button>
-            <el-button v-else-if="subStoreData.setting.value.abroad_type==='proxy'" color="green">代理</el-button>
-            <el-button v-else color="green">节点池负载均衡</el-button>
+            <el-button v-if="subStoreData.setting.value.abroad_type==='proxy'" color="green">代理</el-button>
           </el-col>
           <el-col :span="1"></el-col>
           <el-col :span="15" v-if="subStoreData.setting.value.abroad_type==='proxy' && subStoreData.setting.value.node_pool_model !=='bm'" style="color: #626aef">{{ subStoreData.enabledAbroadNode.value.remarks }}</el-col>
@@ -220,6 +219,15 @@ const getEnabledNodes = () => {
 };
 //启动服务
 const onStartService = () => {
+  if (subStoreData.enabledDomesticNode.value.remarks === '' && subStoreData.setting.value.domestic_type==='proxy'){
+    ElMessage.warning("国内活动节点未配置！")
+    return
+  }
+  if (subStoreData.enabledAbroadNode.value.remarks === '' && subStoreData.setting.value.abroad_type==='proxy'){
+    ElMessage.warning("国外活动节点未配置！")
+    return
+  }
+
   subStoreData.isLoadingService.value=true
   subscribeApi.startService().then(() => {
       subStore.getProcessStatus()

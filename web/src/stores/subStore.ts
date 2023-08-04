@@ -23,8 +23,12 @@ export const useSubStore = defineStore('subStore', {
         abroadNodeList: [] as NodeInfo[],
         //当前激活的节点
         enabledNodes: [] as NodeInfo[],
-        enabledDomesticNode: {} as NodeInfo,
-        enabledAbroadNode: {} as NodeInfo,
+        enabledDomesticNode: {
+            remarks:'',
+        } as NodeInfo,
+        enabledAbroadNode: {
+            remarks:'',
+        } as NodeInfo,
         //http延迟测试
         baiduDelay: 0,
         youtubeDelay: 0,
@@ -62,28 +66,28 @@ export const useSubStore = defineStore('subStore', {
         //获取国内节点池
         async getDomesticNodePool(params: object) {
             const res = await subscribeApi.getNodePool(params)
-            if (res.code === 0) {
+            if (res.data !== null) {
                 this.domesticNodeList = res.data
             }
         },
         //获取国外节点池
         async getAbroadNodePool(params: object) {
             const res = await subscribeApi.getNodePool(params)
-            if (res.code === 0) {
+            if (res.data !== null) {
                 this.abroadNodeList = res.data
             }
         },
         //获取激活的节点
         async getDomesticEnabledNode() {
             const res = await subscribeApi.getEnabledNodes({ascription: "domestic"})
-            if (res.code === 0) {
+            if (res.data !== null) {
                 this.enabledDomesticNode = res.data
             }
         },
         //获取激活的节点
         async getAbroadEnabledNode() {
             const res = await subscribeApi.getEnabledNodes({ascription: "abroad"})
-            if (res.code === 0) {
+            if (res.data !== null) {
                 this.enabledAbroadNode = res.data
             }
         },

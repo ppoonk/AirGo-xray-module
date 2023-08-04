@@ -361,17 +361,17 @@ func (n *Node) GetEnabledNodes() (*Node, error) {
 
 	var node Node
 	var err error
-	var errText string
+	//var errText string
 	if n.Ascription == "domestic" {
-		errText = "国内节点未配置"
+		//errText = "国内节点未配置"
 		err = global.DB.Model(&NodePool{}).Where("enabled = '1' and ascription ='domestic'").First(&node).Error
 	} else {
-		errText = "国外节点未配置"
+		//errText = "国外节点未配置"
 		err = global.DB.Model(&NodePool{}).Where("enabled = '1' and ascription ='abroad'").First(&node).Error
 	}
 
 	if err != nil {
-		return nil, errors.New(errText)
+		return nil, err
 	}
 	return &node, nil
 }

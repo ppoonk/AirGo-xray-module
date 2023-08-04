@@ -19,10 +19,10 @@ func outboundConfigNew() interface{} {
 		default: //其他模式
 			var node = &Node{Ascription: "abroad"}
 			node, err := node.GetEnabledNodes()
-			node.DomainToIP()
 			if err != nil {
 				return nil
 			}
+			node.DomainToIP()
 			out = append(out, NodeOutBound(node))
 		}
 
@@ -43,10 +43,10 @@ func outboundConfigNew() interface{} {
 		default: //其他模式
 			var node = &Node{Ascription: "domestic"}
 			node, err := node.GetEnabledNodes()
-			node.DomainToIP()
 			if err != nil {
 				return nil
 			}
+			node.DomainToIP()
 			out = append(out, NodeOutBound(node))
 		}
 
