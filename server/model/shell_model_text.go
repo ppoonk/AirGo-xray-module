@@ -120,7 +120,8 @@ allowAppsUid=(allowAppsUidReplace)
 	ip6tables -t mangle -P OUTPUT DROP
 	ip6tables -t mangle -A OUTPUT -m owner --gid-owner 3333 -j ACCEPT
 	ip6tables -t mangle -A OUTPUT -m owner --gid-owner 2222 -j ACCEPT
-	ip6tables -t mangle -A OUTPUT -j REJECT --reject-with tcp-reset
+	#ip6tables -t mangle -A OUTPUT -j REJECT --reject-with tcp-reset
+    while ip6tables -t mangle -A OUTPUT -j REJECT --reject-with tcp-reset; do :; done
 `
 
 // 清除路由

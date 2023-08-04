@@ -52,31 +52,12 @@
       <recent name="$PROJECT_DIR$/xray-1" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/.github/workflows" />
       <recent name="$PROJECT_DIR$/AirGo-Magisk" />
       <recent name="$PROJECT_DIR$/xray-1" />
       <recent name="$PROJECT_DIR$/xray-bin/bin" />
       <recent name="$PROJECT_DIR$/xray-bin" />
-      <recent name="$PROJECT_DIR$/global" />
     </key>
-  </component>
-  <component name="RunManager">
-    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
-      <module name="server" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="FILE" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
-      <module name="server" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="DIRECTORY" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <method v="2" />
-    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
