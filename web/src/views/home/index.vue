@@ -219,15 +219,14 @@ const getEnabledNodes = () => {
 };
 //启动服务
 const onStartService = () => {
-  if (subStoreData.enabledDomesticNode.value.remarks === '' && subStoreData.setting.value.domestic_type==='proxy'){
+  if (subStoreData.enabledDomesticNode.value.remarks === '' && subStoreData.setting.value.domestic_type==='proxy' && subStoreData.setting.value.node_pool_model!=='bm'){
     ElMessage.warning("国内活动节点未配置！")
     return
   }
-  if (subStoreData.enabledAbroadNode.value.remarks === '' && subStoreData.setting.value.abroad_type==='proxy'){
+  if (subStoreData.enabledAbroadNode.value.remarks === '' && subStoreData.setting.value.abroad_type==='proxy' && subStoreData.setting.value.node_pool_model!=='bm'){
     ElMessage.warning("国外活动节点未配置！")
     return
   }
-
   subStoreData.isLoadingService.value=true
   subscribeApi.startService().then(() => {
       subStore.getProcessStatus()

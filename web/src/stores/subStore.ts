@@ -104,17 +104,13 @@ export const useSubStore = defineStore('subStore', {
         async testNodeDelayBaidu() {
             this.baiduDelay = 0
             const res = await subscribeApi.testNodeDelay({url: "https://www.baidu.com"})
-            if (res.code === 0) {
                 this.baiduDelay = res.data
-            }
         },
         //Youtube http延迟测试
         async testNodeDelayYoutube() {
             this.youtubeDelay = 0
             const res = await subscribeApi.testNodeDelay({url: "https://www.youtube.com"})
-            if (res.code === 0) {
                 this.youtubeDelay = res.data
-            }
         },
         // 测试ip
         async testDomesticIP() {
@@ -123,10 +119,7 @@ export const useSubStore = defineStore('subStore', {
                 location: '',
             }
             const res = await subscribeApi.testNodeIP({type: "domestic"})
-            if (res.code === 0) {
                 this.domesticIP = res.data
-            }
-
         },
         // 测试ip
         async testAbroadIP() {
@@ -135,33 +128,25 @@ export const useSubStore = defineStore('subStore', {
                 location: '',
             }
             const res = await subscribeApi.testNodeIP({type: "abroad"})
-            if (res.code === 0) {
                 this.abroadIP = res.data
-            }
         },
         //获取配置
         async getConfig() {
             const res = await subscribeApi.getConfig()
-            if (res.code === 0) {
                 this.setting = res.data
-            }
         },
         //获取全部包名
         async getAllPackages() {
             const res = await subscribeApi.getAllPackages()
-            if (res.code === 0) {
                 this.allPackages = res.data
-            }
         },
 
-        //节点列表 tcping
+        //处理节点tcping
         async onTcping(nodeList: NodeInfo[]) {
             nodeList.forEach((value, index, array) => {
                 array[index].tcping = 0
                 subscribeApi.tcping(value).then((res) => {
-                    if (res.code === 0) {
                         array[index].tcping = res.data
-                    }
                 })
             })
         },
