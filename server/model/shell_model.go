@@ -73,6 +73,7 @@ func (s *Shell) DoShell(sh string, outType bool) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	os.Remove("temp.sh")
 	return string(out), nil
 }
 

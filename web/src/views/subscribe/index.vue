@@ -1,9 +1,9 @@
 <template>
   <div class="layout-pd">
-    <div>
-      <div class="home-card-item">
+    <div >
+      <div class="home-card-item" style="background: rgb(255,255,255);opacity:1">
         <div>
-          <el-select @change="getSubNode(checkedSubId)" v-model="checkedSubId.id" style="width: 100%" class="m-2"
+          <el-select @change="getSubNode(checkedSubId)" v-model="checkedSubId.id" style="width: 100%;height: 45px" class="m-2"
                      placeholder="选择订阅">
             <el-option
                 v-for="item in subList"
@@ -14,81 +14,84 @@
           </el-select>
         </div>
         <div style="display: flex; align-items: center;height: 50px">
-          <el-button color="#626aef" size="small" @click="state.isShowAddSubDialog=true">添加</el-button>
-          <el-button type="primary" size="small" v-if="checkedSubId.id!==1" @click="onUpdateSub(checkedSubId)">
+          <el-button color="#626aef" @click="state.isShowAddSubDialog=true">添加</el-button>
+          <el-button type="primary" v-if="checkedSubId.id!==1" @click="onUpdateSub(checkedSubId)">
             更新
           </el-button>
-          <el-button type="warning" size="small" @click="onTcpingNew(nodeList)">TCPing</el-button>
-          <el-button type="danger" size="small" v-if="checkedSubId.id!==1" @click="onDeleteSub(checkedSubId)">删除
+          <el-button type="warning" @click="onTcpingNew(nodeList)">TCPing</el-button>
+          <el-button type="danger" v-if="checkedSubId.id!==1" @click="onDeleteSub(checkedSubId)">删除
           </el-button>
         </div>
       </div>
     </div>
-    <div class="home-card-item">
-      <div v-for="v in nodeList" :key="v.id">
-        <div class="home-card-item">
-          <el-row>
-            <el-col :span="14"></el-col>
-            <el-col :span="4" style="text-align: right;color: coral">{{ v.node_type }}</el-col>
-            <el-col :span="2"></el-col>
-            <el-col :span="4" style="text-align: right;color: #329963">{{ v.tcping }}ms</el-col>
-          </el-row>
-          <div style="font-weight: bold">{{ v.remarks }}</div>
-          <div>
+    <div >
+      <div class="home-card-item">
+        <div v-for="v in nodeList" :key="v.id">
+          <div class="home-card-item">
             <el-row>
-              <el-col :span="16"></el-col>
-              <el-col :span="2" style="text-align: right">
-                <el-dropdown>
-<!--                  <SvgIcon name="fa fa-paper-plane-o"/>-->
-                  <el-icon><Position /></el-icon>
-                  <template #dropdown>
-                    <el-dropdown-menu>
-                      <el-dropdown-item @click="onJoinNodePool(v,'domestic')">加入国内节点池</el-dropdown-item>
-                      <el-dropdown-item @click="onJoinNodePool(v,'abroad')">加入国外节点池</el-dropdown-item>
-                    </el-dropdown-menu>
-                  </template>
-                </el-dropdown>
-              </el-col>
-              <el-col :span="4"></el-col>
-              <el-col :span="2" style="text-align: right" @click="onDeleteNode({id:v.id})">
-<!--                <SvgIcon name="fa fa-trash-o"/>-->
-                <el-icon><CloseBold /></el-icon>
-              </el-col>
+              <el-col :span="14"></el-col>
+              <el-col :span="4" style="text-align: right;color: coral">{{ v.node_type }}</el-col>
+              <el-col :span="2"></el-col>
+              <el-col :span="4" style="text-align: right;color: #329963">{{ v.tcping }}ms</el-col>
             </el-row>
+            <div style="font-weight: bold">{{ v.remarks }}</div>
+            <div>
+              <el-row>
+                <el-col :span="16"></el-col>
+                <el-col :span="2" style="text-align: right">
+                  <el-dropdown>
+                    <!--                  <SvgIcon name="fa fa-paper-plane-o"/>-->
+                    <el-icon><Position /></el-icon>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item style="height: 50px;margin-bottom: 5px;font-weight: bolder;border: solid gray 1px" @click="onJoinNodePool(v,'domestic')">加入 国内 节点池</el-dropdown-item>
+                        <el-dropdown-item style="height: 50px;font-weight: bolder;border: solid gray 1px" @click="onJoinNodePool(v,'abroad')">加入 国外 节点池</el-dropdown-item>
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
+                </el-col>
+                <el-col :span="4"></el-col>
+                <el-col :span="2" style="text-align: right" @click="onDeleteNode({id:v.id})">
+                  <!--                <SvgIcon name="fa fa-trash-o"/>-->
+                  <el-icon><CloseBold /></el-icon>
+                </el-col>
+              </el-row>
+            </div>
+            <div style="color: #9b9da1">{{ v.address }}</div>
           </div>
-          <div style="color: #9b9da1">{{ v.address }}</div>
         </div>
       </div>
-    </div>
-    <!--    订阅弹窗-->
-    <div>
-      <el-dialog
-          v-model="state.isShowAddSubDialog"
-          title="输入订阅地址或节点"
-          width="80%"
-      >
-        <el-form
-            label-position="top"
-            label-width="200px"
-            :model="addSubUrl"
+      <!--    订阅弹窗-->
+      <div>
+        <el-dialog
+            v-model="state.isShowAddSubDialog"
+            title="输入订阅地址或节点"
+            width="80%"
         >
-          <el-form-item label="订阅备注(只导入节点无需填写)">
-            <el-input v-model="addSubUrl.alias"></el-input>
-          </el-form-item>
-          <el-form-item label="输入订阅地址或节点">
-            <el-input type="textarea" v-model="addSubUrl.url" :rows="6"></el-input>
-          </el-form-item>
-        </el-form>
-        <template #footer>
+          <el-form
+              label-position="top"
+              label-width="200px"
+              :model="addSubUrl"
+          >
+            <el-form-item label="订阅备注(只导入节点无需填写)">
+              <el-input v-model="addSubUrl.alias"></el-input>
+            </el-form-item>
+            <el-form-item label="输入订阅地址或节点">
+              <el-input type="textarea" v-model="addSubUrl.url" :rows="6"></el-input>
+            </el-form-item>
+          </el-form>
+          <template #footer>
           <span class="dialog-footer">
             <el-button @click="state.isShowAddSubDialog = false">取消</el-button>
             <el-button type="primary" @click="onAddSub(addSubUrl)">
               确定
             </el-button>
           </span>
-        </template>
-      </el-dialog>
+          </template>
+        </el-dialog>
+      </div>
     </div>
+
   </div>
 </template>
 
@@ -249,13 +252,6 @@ onMounted(() => {
   border: 1px solid var(--next-border-color-light);
 }
 
-.el-card {
-  background-image: url("../../assets/bgc/bg-1.svg");
-  background-repeat: no-repeat;
-  background-position: 100%, 100%;
-  //background: rgba(0,0,0,0.3);
-}
-
 .card-text {
   display: flex;
   justify-content: space-between;
@@ -276,5 +272,12 @@ onMounted(() => {
 .card-header-left {
   font-size: 15px;
   color: #AC96F1;
+}
+.sub-header {
+  width: 92%;
+  position: fixed;
+  //left: 50%;
+  top: 6%;
+  //transform: translate(-50%, -50%); /* 50%为自身尺寸的一半 */
 }
 </style>

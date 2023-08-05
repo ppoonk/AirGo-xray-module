@@ -12,7 +12,7 @@
         <el-form-item label="免流混淆">
           <el-input v-model="subStoreData.setting.value.host"/>
         </el-form-item>
-
+        <div  style="height: 20px"></div>
         <el-form-item label="国内分流">
           <el-switch v-model="subStoreData.setting.value.domestic_type" inline-prompt
                      active-text="代理"
@@ -22,6 +22,7 @@
                      size="default"
                      style="--el-switch-on-color: #13ce66; --el-switch-off-color: #0aa3f8"></el-switch>
         </el-form-item>
+        <div  style="height: 20px"></div>
         <el-form-item label="国外分流">
           <el-switch v-model="subStoreData.setting.value.abroad_type" inline-prompt
                      active-text="代理"
@@ -39,8 +40,8 @@
         <!--                       inactive-value="0"-->
         <!--                       style="&#45;&#45;el-switch-on-color: #13ce66; &#45;&#45;el-switch-off-color: #ff4949"></el-switch>-->
         <!--          </el-form-item>-->
-
-        <el-form-item>
+        <div  style="height: 20px"></div>
+        <el-form-item >
             <span slot="label">
               节点池工作模式
             <el-tooltip placement="top">
@@ -59,7 +60,7 @@
               <el-radio-button label="bm">负载均衡</el-radio-button>
             </el-radio-group>
         </el-form-item>
-
+        <div  style="height: 20px"></div>
         <el-form-item label="wifi代理">
           <el-switch v-model="subStoreData.setting.value.wifi_proxy" inline-prompt
                      active-text="开启"
@@ -68,6 +69,7 @@
                      inactive-value="0"
                      style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"></el-switch>
         </el-form-item>
+        <div  style="height: 20px"></div>
         <el-form-item label="放行应用">
           <el-select
               v-model="subStoreData.setting.value.allow_apps"
@@ -84,6 +86,7 @@
             />
           </el-select>
         </el-form-item>
+        <div  style="height: 20px"></div>
         <el-form-item>
           <el-button @click="onUpdateConfig(subStoreData.setting.value)" type="primary" style="margin-top: 15px">保存</el-button>
         </el-form-item>
@@ -96,7 +99,7 @@
 
 <script lang="ts" setup>
 import {useSubscribeApi} from "/@/api/subscribe";
-import {ElMessageBox} from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
 
 import {storeToRefs} from "pinia";
 import {useSubStore} from "/@/stores/subStore";
@@ -108,7 +111,7 @@ const subscribeApi = useSubscribeApi()
 
 //保存配置
 const onUpdateConfig = (params: object) => {
-  subscribeApi.updateConfig(params).then(() => {
+  subscribeApi.updateConfig(params).then((res) => {
     subStore.getConfig() //获取配置
     if (subStoreData.xrayStatus.value) {
       ElMessageBox.confirm(`配置已保存：是否立即重启免流核心?`, '提示', {
@@ -126,6 +129,8 @@ const onUpdateConfig = (params: object) => {
           })
           .catch(() => {
           });
+    } else {
+      ElMessage.success(res.msg)
     }
   })
 }
