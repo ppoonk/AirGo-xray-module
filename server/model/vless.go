@@ -1,8 +1,8 @@
 package model
 
 import (
+	"AirGo/global"
 	"net/url"
-	"server/global"
 	"strconv"
 )
 
@@ -10,7 +10,7 @@ type Vless struct {
 	VlessRemarks string `json:"remarks"` //别名
 	VlessID      string `json:"id"`      //用户id
 	VlessAddress string `json:"address"` //地址
-	VlessPort    int    `json:"port"`    //端口
+	VlessPort    int64  `json:"port"`    //端口
 
 	VlessFlow       string `json:"flow"`       //流控 none,xtls-rprx-vision,xtls-rprx-vision-udp443
 	VlessEncryption string `json:"encryption"` //加密方式 none
@@ -53,7 +53,7 @@ func ParseVLessLink(link string) *Node {
 	//address
 	node.Address = u.Hostname()
 	//port
-	node.Port, err = strconv.Atoi(u.Port())
+	node.Port, err = strconv.ParseInt(u.Port(), 10, 64)
 	if err != nil {
 		return nil
 	}

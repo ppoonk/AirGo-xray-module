@@ -1,6 +1,6 @@
 package model
 
-import "server/global"
+import "AirGo/global"
 
 // 出站
 func outboundConfigNew() interface{} {

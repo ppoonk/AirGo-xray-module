@@ -1,10 +1,10 @@
 package api
 
 import (
+	"AirGo/global"
+	"AirGo/model"
+	"AirGo/model/response"
 	"github.com/gin-gonic/gin"
-	"server/global"
-	"server/model"
-	"server/model/response"
 )
 
 // 添加订阅

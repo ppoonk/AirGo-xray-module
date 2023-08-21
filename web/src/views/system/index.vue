@@ -13,6 +13,15 @@
           <el-input v-model="subStoreData.setting.value.host"/>
         </el-form-item>
         <div  style="height: 20px"></div>
+        <el-form-item label="开机启动xray">
+          <el-switch v-model="subStoreData.setting.value.startup_xray" inline-prompt
+                     active-text="开启"
+                     active-value="1"
+                     inactive-text="关闭"
+                     inactive-value="0"
+                     style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"></el-switch>
+        </el-form-item>
+        <div  style="height: 20px"></div>
         <el-form-item label="国内分流">
           <el-switch v-model="subStoreData.setting.value.domestic_type" inline-prompt
                      active-text="代理"
@@ -32,14 +41,7 @@
                      size="default"
                      style="--el-switch-on-color: #13ce66; --el-switch-off-color: #0aa3f8"></el-switch>
         </el-form-item>
-        <!--          <el-form-item label="自动切换节点 (如果自动切换出现问题,请置为关闭状态)">-->
-        <!--            <el-switch v-model="subStoreData.setting.value.auto_change_node" inline-prompt-->
-        <!--                       active-text="开启"-->
-        <!--                       active-value="1"-->
-        <!--                       inactive-text="关闭"-->
-        <!--                       inactive-value="0"-->
-        <!--                       style="&#45;&#45;el-switch-on-color: #13ce66; &#45;&#45;el-switch-off-color: #ff4949"></el-switch>-->
-        <!--          </el-form-item>-->
+
         <div  style="height: 20px"></div>
         <el-form-item >
             <span slot="label">
@@ -69,6 +71,7 @@
                      inactive-value="0"
                      style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"></el-switch>
         </el-form-item>
+
         <div  style="height: 20px"></div>
         <el-form-item label="放行应用">
           <el-select

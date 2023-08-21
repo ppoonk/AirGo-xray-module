@@ -1,4 +1,4 @@
-module server
+module AirGo
 
 go 1.19
 

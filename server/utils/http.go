@@ -18,7 +18,7 @@ type Ip3030 struct {
 }
 
 // 通过http代理访问网站
-func GetByHTTPProxy(objUrl, proxyAddress string, proxyPort int, timeOut time.Duration) (*http.Response, error) {
+func GetByHTTPProxy(objUrl, proxyAddress string, proxyPort int64, timeOut time.Duration) (*http.Response, error) {
 	proxy := func(_ *http.Request) (*url.URL, error) {
 		return url.Parse(fmt.Sprintf("http://%s:%d", proxyAddress, proxyPort))
 	}
@@ -31,7 +31,7 @@ func GetByHTTPProxy(objUrl, proxyAddress string, proxyPort int, timeOut time.Dur
 }
 
 // 通过Socks5代理访问网站
-func GetBySocks5Proxy(objUrl, proxyAddress string, proxyPort int, timeOut time.Duration) (*http.Response, error) {
+func GetBySocks5Proxy(objUrl, proxyAddress string, proxyPort int64, timeOut time.Duration) (*http.Response, error) {
 
 	proxy := func(_ *http.Request) (*url.URL, error) {
 		return url.Parse(fmt.Sprintf("socks5://%s:%d", proxyAddress, proxyPort))
@@ -53,7 +53,7 @@ func GetNoProxy(url string, timeOut time.Duration) (*http.Response, error) {
 }
 
 // 发送tcp
-func Tcp(address string, port int) {
+func Tcp(address string, port int64) {
 	dialer := net.Dialer{Timeout: 3 * time.Second}
 	conn, err := dialer.Dial("tcp", fmt.Sprintf("%s:%d", address, port))
 	if err != nil {
@@ -63,7 +63,7 @@ func Tcp(address string, port int) {
 }
 
 // socks5 http.Client
-func ClientWithSocks5(proxyAddress string, proxyPort int, timeOut time.Duration) *http.Client {
+func ClientWithSocks5(proxyAddress string, proxyPort int64, timeOut time.Duration) *http.Client {
 	proxy := func(_ *http.Request) (*url.URL, error) {
 		return url.Parse(fmt.Sprintf("socks5://%s:%d", proxyAddress, proxyPort))
 	}

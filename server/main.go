@@ -1,13 +1,13 @@
 package main
 
 import (
+	"AirGo/global"
+	"AirGo/initialize"
+	"AirGo/model"
+	"AirGo/router"
 	"flag"
 	"fmt"
 	"runtime"
-	"server/global"
-	"server/initialize"
-	"server/model"
-	"server/router"
 )
 
 var start = flag.Bool("start", false, "启动")
@@ -16,17 +16,21 @@ var stop = flag.Bool("stop", false, "停止")
 func main() {
 	switch runtime.GOOS {
 	case "darwin":
-		initialize.Initialize() //初始化参数
+		initialize.Initialize() //初始化全局变量，配置参数
 		router.InitRouter()     //初始化路由
 	default:
 		flag.Parse()
 		if *start && !*stop { //启动
 			initialize.Initialize() //初始化参数
-			if global.Config.OS != "darwin" {
-				var sh model.Shell
-				sh.DoShell(model.OpenFirewall, false)
-			} //放行防火墙
+
+			var sh model.Shell
+			sh.DoShell(model.OpenFirewall, false) //linux放行防火墙
+
 			router.InitRouter() //初始化路由
+			//判断是否自启xray
+			if global.Config.StartupXray == "1" { //是否开机自启xray
+				sh.StartService()
+			}
 
 		} else if !*start && *stop { //停止
 			var sh model.Shell

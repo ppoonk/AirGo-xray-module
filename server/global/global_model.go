@@ -7,7 +7,7 @@ import (
 )
 
 type ConfigInfo struct {
-	ID        uint      `json:"id" gorm:"primarykey"`
+	ID        int64     `json:"id" gorm:"primarykey"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 
@@ -16,8 +16,8 @@ type ConfigInfo struct {
 	DomesticType  string `json:"domestic_type" gorm:"default:direct"` //国内分流类型，direct直连，proxy代理
 	AbroadType    string `json:"abroad_type"   gorm:"default:direct"` //国外分流类型，direct直连，proxy代理
 
-	Host string `json:"host"` //免流混淆
-	//AutoChangeNode     string `json:"auto_change_node" gorm:"default:1"`                   //自动切换节点,1启用
+	Host               string `json:"host"`                                                //免流混淆
+	StartupXray        string `json:"startup_xray" gorm:"default:0"`                       //开机启动xray，1启动
 	NodePoolModel      string `json:"node_pool_model"  gorm:"default:hm"`                  //节点池工作模式，手动（hm）自动（am）负载均衡（bm）
 	WIFIProxy          string `json:"wifi_proxy"       gorm:"default:1;column:wifi_proxy"` //WiFi代理,1代理
 	IPV6Net            string `json:"ipv6_net"         gorm:"default:0;column:ipv6_net"`   //ipv6联网，1联网

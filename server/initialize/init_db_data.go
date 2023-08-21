@@ -1,10 +1,10 @@
 package initialize
 
 import (
+	"AirGo/global"
+	"AirGo/model"
+	"AirGo/utils"
 	"runtime"
-	"server/global"
-	"server/model"
-	"server/utils"
 )
 
 // 注册数据库表

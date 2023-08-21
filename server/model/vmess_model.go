@@ -1,10 +1,10 @@
 package model
 
 import (
+	"AirGo/global"
+	"AirGo/utils"
 	"encoding/json"
 	"fmt"
-	"server/global"
-	"server/utils"
 	"strconv"
 	"strings"
 )
@@ -13,10 +13,10 @@ type Vmess struct {
 	V    string `json:"v"`
 	Ps   string `json:"ps"`
 	Add  string `json:"add"`
-	Port int    `json:"port"`
+	Port int64  `json:"port"`
 	Id   string `json:"id"`
 	Scy  string `json:"scy"`  //加密方式 auto,none,chacha20-poly1305,aes-128-gcm,zero
-	Aid  int    `json:"aid"`  //额外ID
+	Aid  int64  `json:"aid"`  //额外ID
 	Net  string `json:"net"`  //传输协议 tcp,kcp,ws,h2,quic,grpc
 	Type string `json:"type"` //伪装类型 none,http
 	Host string `json:"host"`
@@ -66,7 +66,7 @@ func ParseVMessLink(link string) *Node {
 		node.Scy = "auto"
 	}
 	if port, ok := mapResult["port"]; ok {
-		value, err := strconv.Atoi(fmt.Sprintf("%v", port))
+		value, err := strconv.ParseInt(fmt.Sprintf("%v", port), 10, 64)
 		if err == nil {
 			node.Port = value //端口
 		} else {
@@ -82,7 +82,7 @@ func ParseVMessLink(link string) *Node {
 		return nil
 	}
 	if aid, ok := mapResult["aid"]; ok {
-		if value, err := strconv.Atoi(fmt.Sprintf("%v", aid)); err == nil {
+		if value, err := strconv.ParseInt(fmt.Sprintf("%v", aid), 10, 64); err == nil {
 			node.Aid = value //额外id
 		} else {
 			return nil

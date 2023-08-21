@@ -1,6 +1,10 @@
 package router
 
 import (
+	"AirGo/api"
+	"AirGo/global"
+	"AirGo/middleware"
+	"AirGo/model"
 	"context"
 	"embed"
 	"github.com/gin-gonic/gin"
@@ -10,10 +14,6 @@ import (
 	"os/signal"
 	"path"
 	"path/filepath"
-	"server/api"
-	"server/global"
-	"server/middleware"
-	"server/model"
 	"time"
 )
 

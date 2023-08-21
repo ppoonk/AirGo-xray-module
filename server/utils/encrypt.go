@@ -42,7 +42,7 @@ func Sha256Encode(str string) string {
 }
 
 // 随机数，n为 位数
-func RandomString(n int) string {
+func RandomString(n int64) string {
 	var defaultLetters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 	rand.Seed(time.Now().UnixNano())
 	randomStr := make([]rune, n)

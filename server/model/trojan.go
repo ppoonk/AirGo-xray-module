@@ -1,8 +1,8 @@
 package model
 
 import (
+	"AirGo/global"
 	"net/url"
-	"server/global"
 	"strconv"
 )
 
@@ -10,7 +10,7 @@ type Trojan struct {
 	TrojanRemarks  string `json:"remarks"`
 	TrojanPassword string `json:"password"`
 	TrojanAddress  string `json:"address"`
-	TrojanPort     int    `json:"port"`
+	TrojanPort     int64  `json:"port"`
 
 	TrojanNetwork  string `json:"network"` //传输协议 tcp,kcp,ws,h2,quic,grpc
 	TrojanGrpcMode string `json:"mode"`    //grpc传输模式
@@ -47,7 +47,7 @@ func ParseTrojanLink(link string) *Node {
 	//address
 	node.Address = u.Hostname()
 	//port
-	node.Port, err = strconv.Atoi(u.Port())
+	node.Port, err = strconv.ParseInt(u.Port(), 10, 64)
 	if err != nil {
 		return nil
 	}

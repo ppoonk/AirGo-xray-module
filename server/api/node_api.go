@@ -1,11 +1,11 @@
 package api
 
 import (
+	"AirGo/global"
+	"AirGo/model"
+	"AirGo/model/response"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"server/global"
-	"server/model"
-	"server/model/response"
 	"strconv"
 )
 
@@ -15,8 +15,8 @@ func FindNodeById(ctx *gin.Context) {
 	if nodeIdStr == "" {
 		return
 	}
-	nodeId, _ := strconv.Atoi(nodeIdStr)
-	var node = model.Node{ID: uint(nodeId)}
+	nodeId, _ := strconv.ParseInt(nodeIdStr, 10, 64)
+	var node = model.Node{ID: nodeId}
 	err := node.FindNodeById()
 	if err != nil {
 		global.Logrus.Error("查节点错误:", err.Error())

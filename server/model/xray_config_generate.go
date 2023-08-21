@@ -1,10 +1,10 @@
 package model
 
 import (
+	"AirGo/global"
+	"AirGo/utils"
 	"path/filepath"
 	"runtime"
-	"server/global"
-	"server/utils"
 	"strings"
 )
 

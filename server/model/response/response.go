@@ -12,14 +12,14 @@ const (
 
 // 序列化器
 type Response struct {
-	Code int         `json:"code"`
+	Code int64       `json:"code"`
 	Msg  string      `json:"msg"`
 	Data interface{} `json:"data"`
 
 	//Error  string      `json:"error"`
 }
 
-func Result(code int, msg string, data interface{}, c *gin.Context) {
+func Result(code int64, msg string, data interface{}, c *gin.Context) {
 	c.JSON(http.StatusOK, Response{
 		code,
 		msg,

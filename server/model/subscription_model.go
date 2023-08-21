@@ -1,16 +1,16 @@
 package model
 
 import (
+	"AirGo/global"
+	"AirGo/utils"
 	"errors"
-	"server/global"
-	"server/utils"
 	"strings"
 	"time"
 )
 
 type Subscription struct {
 	//gorm.Model
-	ID        uint      `json:"id" gorm:"primarykey"`
+	ID        int64     `json:"id" gorm:"primarykey"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 	//DeletedAt gorm.DeletedAt `json:"-" gorm:"index"`

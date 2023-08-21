@@ -1,10 +1,10 @@
 package model
 
 import (
+	"AirGo/global"
 	"os"
 	"os/exec"
 	"runtime"
-	"server/global"
 	"strings"
 )
 
@@ -43,6 +43,7 @@ func (s *Shell) HandlePackages(packagesArr []string) string {
 			uidArr = append(uidArr, strings.TrimSpace(out))
 		}
 	}
+	uidArr = append(uidArr, strings.TrimSpace(defaultAllowPackages)) //默认放行的
 	str := strings.Join(uidArr, " ")
 	global.Logrus.Info("uid:", str)
 	return str

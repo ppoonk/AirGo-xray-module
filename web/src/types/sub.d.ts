@@ -58,6 +58,7 @@ declare interface Config {
     auto_change_node: string;
     node_pool_model:string;
     host: string;
+    startup_xray: string;
     wifi_proxy: string;
     ipv6_net: string;
     allow_outside_tcp_udp: string;

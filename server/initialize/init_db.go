@@ -1,13 +1,13 @@
 package initialize
 
 import (
+	"AirGo/global"
+	"AirGo/utils"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
 	"path/filepath"
 	"runtime"
-	"server/global"
-	"server/utils"
 )
 
 // 初始化sqlite数据库

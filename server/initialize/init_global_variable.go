@@ -1,13 +1,13 @@
 package initialize
 
 import (
+	"AirGo/global"
+	"AirGo/model"
+	"AirGo/utils"
 	"github.com/robfig/cron/v3"
 	"github.com/sirupsen/logrus"
 	"io"
 	"os"
-	"server/global"
-	"server/model"
-	"server/utils"
 )
 
 func Initialize() {
@@ -17,7 +17,7 @@ func Initialize() {
 		RegisterTables()
 		InsertInto()
 	}
-	InitConfig()                //初始化配置
+	InitConfig()                //初始化配置参数
 	InitNodeAutoChangeCrontab() //节点连通性检测定时任务
 	//InitClientAndDialer() //初始化http.Client,net.Dialer
 }

@@ -1,6 +1,8 @@
 package model
 
 import (
+	"AirGo/global"
+	"AirGo/utils"
 	"context"
 	"errors"
 	"fmt"
@@ -8,8 +10,6 @@ import (
 	"net/http"
 	"net/url"
 	"runtime"
-	"server/global"
-	"server/utils"
 	"strconv"
 	"strings"
 	"time"
@@ -21,7 +21,7 @@ const (
 )
 
 type Node struct {
-	ID        uint      `json:"id" gorm:"primarykey"`
+	ID        int64     `json:"id" gorm:"primarykey"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 	//DeletedAt gorm.DeletedAt `json:"-"  gorm:"index"`
@@ -33,7 +33,7 @@ type Node struct {
 	Remarks    string  `json:"remarks"`    //别名
 	UUID       string  `json:"uuid"`       //用户id
 	Address    string  `json:"address"`    //地址
-	Port       int     `json:"port"`       //端口
+	Port       int64   `json:"port"`       //端口
 	Ns         string  `json:"ns"`         //ip地址
 	TcpingData float64 `json:"tcping"`     //
 	Ascription string  `json:"ascription"` //abroad domestic
@@ -42,7 +42,7 @@ type Node struct {
 	//vmess参数
 	V   string `json:"v"`
 	Scy string `json:"scy"` //加密方式 auto,none,chacha20-poly1305,aes-128-gcm,zero
-	Aid int    `json:"aid"` //额外ID
+	Aid int64  `json:"aid"` //额外ID
 	//vless参数
 	VlessFlow       string `json:"flow"`       //流控 none,xtls-rprx-vision,xtls-rprx-vision-udp443
 	VlessEncryption string `json:"encryption"` //加密方式 none
@@ -66,19 +66,19 @@ type Node struct {
 	SpiderX   string `json:"spx"` //reality
 }
 type NodePool struct {
-	ID        uint      `json:"id" gorm:"primarykey"`
+	ID        int64     `json:"id" gorm:"primarykey"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 	//DeletedAt gorm.DeletedAt `json:"-"  gorm:"index"`
 
-	SubscriptionID uint   `json:"subscription_id"` //foreign key
+	SubscriptionID int64  `json:"subscription_id"` //foreign key
 	NodeType       string `json:"node_type"`       //节点类型
 
 	//基础参数
 	Remarks    string  `json:"remarks"`    //别名
 	UUID       string  `json:"uuid"`       //用户id
 	Address    string  `json:"address"`    //地址
-	Port       int     `json:"port"`       //端口
+	Port       int64   `json:"port"`       //端口
 	Ns         string  `json:"ns"`         //ip地址
 	TcpingData float64 `json:"tcping"`     //
 	Ascription string  `json:"ascription"` //abroad domestic
@@ -87,7 +87,7 @@ type NodePool struct {
 	//vmess参数
 	V   string `json:"v"`
 	Scy string `json:"scy"` //加密方式 auto,none,chacha20-poly1305,aes-128-gcm,zero
-	Aid int    `json:"aid"` //额外ID
+	Aid int64  `json:"aid"` //额外ID
 	//vless参数
 	VlessFlow       string `json:"flow"`       //流控 none,xtls-rprx-vision,xtls-rprx-vision-udp443
 	VlessEncryption string `json:"encryption"` //加密方式 none

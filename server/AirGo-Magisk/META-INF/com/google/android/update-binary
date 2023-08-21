@@ -36,13 +36,9 @@ print_modname() {
   local pounds=`printf "%${len}s" | tr ' ' '-'`
 
   ui_print "$pounds"
-  ui_print "- 模块名称：${MODNAME}"
-  ui_print ""
-  ui_print "- 模块版本：${MODVERSION}"
-  ui_print ""
-  ui_print "- 模块作者：${MODAUTHOR}"
-  ui_print ""
-  ui_print "- 模块描述：${MODDESCRIPTTION}"
+  ui_print "${MODNAME}---版本：${MODVERSION}"
+  ui_print "作者：${MODAUTHOR}"
+
   ui_print "$pounds"
 }
 
