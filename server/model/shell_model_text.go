@@ -130,7 +130,7 @@ ip6tables -t mangle -A OUTPUT -j MARK --set-mark 0x1122
 
 ip6tables -t mangle -A OUTPUT -m owner --gid-owner 3333 -j MARK --set-mark 0x1133
 ip6tables -t mangle -A OUTPUT -m owner --gid-owner 2222 -j MARK --set-mark 0x1133
-ip6tables -t mangle -P OUTPUT DROP
+
 ip -6 rule add fwmark 0x1122 unreachable
 
 `

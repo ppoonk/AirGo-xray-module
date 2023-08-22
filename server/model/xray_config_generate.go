@@ -644,14 +644,13 @@ func dnsConfig() interface{} {
 		"address": "8.8.8.8",
 		"domains": []string{"geosite:geolocation-!cn"},
 	})
-
 	servers = append(servers, map[string]interface{}{ //国内域名使用国内DNS查询，并期待返回国内的IP，若不是国内IP则舍弃，用下一个查询
 		"address":   "114.114.114.114",
 		"domains":   []string{"geosite:cn"},
 		"expectIPs": []string{"geoip:cn"},
 	})
 	servers = append(servers, map[string]interface{}{ //对国内网站进行二次查询
-		"address": "114.114.114.114",
+		"address": "119.29.29.29",
 		"domains": []string{"geosite:cn"},
 	})
 	servers = append(servers, "223.6.6.6") //上面全部失败时，用此DNS查询
