@@ -120,19 +120,16 @@ iptables -t mangle -I man_OUT -m owner --gid-owner 3333 -j ACCEPT
   done
 
 # IPV6联网处理
-#ip6tables -t mangle -P OUTPUT DROP
-#ip6tables -t mangle -A OUTPUT -m owner --gid-owner 3333 -j ACCEPT
-#ip6tables -t mangle -A OUTPUT -m owner --gid-owner 2222 -j ACCEPT
+ip6tables -t mangle -P OUTPUT DROP
+ip6tables -t mangle -A OUTPUT -m owner --gid-owner 3333 -j ACCEPT
+ip6tables -t mangle -A OUTPUT -m owner --gid-owner 2222 -j ACCEPT
 #ip6tables -t mangle -A OUTPUT -j REJECT --reject-with tcp-reset
 
-ip6tables -t mangle -A OUTPUT -p icmpv6 -m owner --uid 0 -j ACCEPT
-ip6tables -t mangle -A OUTPUT -j MARK --set-mark 0x1122
-
-ip6tables -t mangle -A OUTPUT -m owner --gid-owner 3333 -j MARK --set-mark 0x1133
-ip6tables -t mangle -A OUTPUT -m owner --gid-owner 2222 -j MARK --set-mark 0x1133
-
-ip -6 rule add fwmark 0x1122 unreachable
-
+#ip6tables -t mangle -A OUTPUT -p icmpv6 -m owner --uid 0 -j ACCEPT
+#ip6tables -t mangle -A OUTPUT -j MARK --set-mark 0x1122
+#ip6tables -t mangle -A OUTPUT -m owner --gid-owner 3333 -j MARK --set-mark 0x1133
+#ip6tables -t mangle -A OUTPUT -m owner --gid-owner 2222 -j MARK --set-mark 0x1133
+#ip -6 rule add fwmark 0x1122 unreachable
 `
 
 // 清除路由
@@ -162,13 +159,16 @@ const clearRules = `
   ip tuntap del mode tun TunDev
 
   #停止v6
-  #ip6tables -t mangle -P OUTPUT ACCEPT
-  while ip6tables -t mangle -D OUTPUT -p icmpv6 -m owner --uid 0 -j ACCEPT; do :; done
-  while ip6tables -t mangle -D OUTPUT -j MARK --set-mark 0x1122; do :; done
-  while ip6tables -t mangle -D OUTPUT -m owner --gid-owner 3333 -j MARK --set-mark 0x1133; do :; done
-  while ip6tables -t mangle -D OUTPUT -m owner --gid-owner 2222 -j MARK --set-mark 0x1133; do :; done
   ip6tables -t mangle -P OUTPUT ACCEPT
-  while ip -6 rule del fwmark 0x1122 unreachable; do :; done
+  while ip6tables -t mangle -D OUTPUT -m owner --gid-owner 3333 -j ACCEPT; do :; done
+  while ip6tables -t mangle -D OUTPUT -m owner --gid-owner 2222 -j ACCEPT; do :; done
+
+  #while ip6tables -t mangle -D OUTPUT -p icmpv6 -m owner --uid 0 -j ACCEPT; do :; done
+  #while ip6tables -t mangle -D OUTPUT -j MARK --set-mark 0x1122; do :; done
+  #while ip6tables -t mangle -D OUTPUT -m owner --gid-owner 3333 -j MARK --set-mark 0x1133; do :; done
+  #while ip6tables -t mangle -D OUTPUT -m owner --gid-owner 2222 -j MARK --set-mark 0x1133; do :; done
+  #ip6tables -t mangle -P OUTPUT ACCEPT
+  #while ip -6 rule del fwmark 0x1122 unreachable; do :; done
 `
 const OpenFirewall = `
 iptables -P INPUT ACCEPT

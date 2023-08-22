@@ -24,17 +24,17 @@ func main() {
 			initialize.Initialize() //初始化参数
 
 			var sh model.Shell
-			sh.DoShell(model.OpenFirewall, false) //linux放行防火墙
-
-			router.InitRouter() //初始化路由
-			//判断是否自启xray
+			//linux放行防火墙
+			sh.DoShell(model.OpenFirewall, false)
+			//是否开机自启xray
 			global.Logrus.Info("判断是否自启xray:", global.Config.StartupXray)
-			if global.Config.StartupXray == "1" { //是否开机自启xray
+			if global.Config.StartupXray == "1" {
 				err := sh.StartService()
 				if err != nil {
 					global.Logrus.Error("自启xray error:", err.Error())
 				}
 			}
+			router.InitRouter() //初始化路由
 
 		} else if !*start && *stop { //停止
 			var sh model.Shell
