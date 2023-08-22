@@ -28,8 +28,12 @@ func main() {
 
 			router.InitRouter() //初始化路由
 			//判断是否自启xray
+			global.Logrus.Info("判断是否自启xray:", global.Config.StartupXray)
 			if global.Config.StartupXray == "1" { //是否开机自启xray
-				sh.StartService()
+				err := sh.StartService()
+				if err != nil {
+					global.Logrus.Error("自启xray error:", err.Error())
+				}
 			}
 
 		} else if !*start && *stop { //停止

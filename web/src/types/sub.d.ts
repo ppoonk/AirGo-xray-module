@@ -56,9 +56,10 @@ declare interface Config {
     domestic_type: string;
     abroad_type: string;
     auto_change_node: string;
-    node_pool_model:string;
+    node_pool_model: string;
     host: string;
     startup_xray: string;
+    block_ads: string;
     wifi_proxy: string;
     ipv6_net: string;
     allow_outside_tcp_udp: string;

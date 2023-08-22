@@ -22,6 +22,15 @@
                      style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"></el-switch>
         </el-form-item>
         <div  style="height: 20px"></div>
+        <el-form-item label="广告域名屏蔽">
+          <el-switch v-model="subStoreData.setting.value.block_ads" inline-prompt
+                     active-text="开启"
+                     active-value="1"
+                     inactive-text="关闭"
+                     inactive-value="0"
+                     style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"></el-switch>
+        </el-form-item>
+        <div  style="height: 20px"></div>
         <el-form-item label="国内分流">
           <el-switch v-model="subStoreData.setting.value.domestic_type" inline-prompt
                      active-text="代理"

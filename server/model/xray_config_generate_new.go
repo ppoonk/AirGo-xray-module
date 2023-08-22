@@ -129,6 +129,14 @@ func routingConfigNew() interface{} {
 		},
 		"outboundTag": "direct",
 	})
+	//处理广告域名屏蔽
+	if global.Config.BlockAds == "1" {
+		rules = append(rules, map[string]interface{}{
+			"type":        "field",
+			"domain":      []string{"geosite:category-ads-all"},
+			"outboundTag": "block",
+		})
+	}
 	//国内分流
 	switch global.Config.DomesticType {
 	case "proxy":
@@ -249,6 +257,7 @@ func routingConfigNew() interface{} {
 	default:
 
 	}
+	//根据是否负载均衡，构造最终路由
 	switch global.Config.NodePoolModel {
 	case "bm":
 		return map[string]interface{}{

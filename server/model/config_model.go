@@ -19,7 +19,8 @@ type Config struct {
 
 	Host               string `json:"host"`                                                //免流混淆
 	NodePoolModel      string `json:"node_pool_model"  gorm:"default:hm"`                  //节点池工作模式，手动（hm）自动（am）负载均衡（bm）
-	StartupXray        string `json:"startup_xray" gorm:"default:0"`                       //开机启动xray，1启动
+	StartupXray        string `json:"startup_xray"     gorm:"default:0"`                   //开机启动xray，1启动
+	BlockAds           string `json:"block_ads"        gorm:"default:0"`                   //广告域名屏蔽
 	WIFIProxy          string `json:"wifi_proxy"       gorm:"default:0;column:wifi_proxy"` //WiFi代理,1代理
 	IPV6Net            string `json:"ipv6_net"         gorm:"default:1;column:ipv6_net"`   //ipv6联网，1联网
 	AllowOutsideTcpUdp string `json:"allow_outside_tcp_udp" gorm:"default:1"`              //放行除tcp,udp外的流量,1放行
