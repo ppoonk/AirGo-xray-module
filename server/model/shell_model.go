@@ -111,6 +111,24 @@ func (s *Shell) StartService() error {
 	}
 }
 
+// 开机启动服务
+func (s *Shell) StartupService() error {
+	//判断节点池工作模式
+	switch global.Config.NodePoolModel {
+	case "am": //开启自动切换节点
+		global.NodeAutoChangeCrontab.Start()
+	}
+	//启动xray
+	switch runtime.GOOS {
+	case "linux":
+		_, err := s.StartXrayAndroid()
+		return err
+	default:
+		_, err := s.StartXrayDarwin()
+		return err
+	}
+}
+
 // 关闭服务
 func (s *Shell) StopService() (string, error) {
 	//判断节点池工作模式
