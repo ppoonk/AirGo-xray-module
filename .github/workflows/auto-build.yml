@@ -22,8 +22,9 @@ jobs:
           cd web
           npm install
           npm run build
-          rm -rf /server/web/web
-          mv web /server/web/
+          rm -rf ${GITHUB_WORKSPACE}/server/web/web
+          ls
+          mv ${GITHUB_WORKSPACE}/web/web ${GITHUB_WORKSPACE}/server/web/
       - name: Go dependence
         run: |
           cd server
