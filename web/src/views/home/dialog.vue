@@ -15,6 +15,8 @@
         <!--          <el-radio :label="trojan">trojan</el-radio>-->
         <!--        </el-radio-group>-->
         <!--      </el-form-item>-->
+
+
         <el-form-item label="remarks">
           <el-input v-model="subStoreData.dialogNode.value.remarks"/>
         </el-form-item>

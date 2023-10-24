@@ -5,94 +5,68 @@ import (
 	"AirGo/global"
 	"AirGo/middleware"
 	"AirGo/model"
+	"AirGo/web"
 	"context"
-	"embed"
 	"github.com/gin-gonic/gin"
-	"io/fs"
 	"net/http"
 	"os"
 	"os/signal"
-	"path"
-	"path/filepath"
 	"time"
 )
 
 var Quit = make(chan os.Signal)
 
-type Resource struct {
-	fs   embed.FS
-	path string
-}
-
-func NewResource() *Resource {
-	return &Resource{
-		fs:   f,
-		path: "web",
-	}
-}
-
-func (r *Resource) Open(name string) (fs.File, error) {
-	//if filepath.Separator != '/' && strings.ContainsRune(name, filepath.Separator) {
-	//	return nil, errors.New("http: invalid character in file path")
-	//}
-	fullName := filepath.Join(r.path, filepath.FromSlash(path.Clean("/"+name)))
-	file, err := r.fs.Open(fullName)
-	return file, err
-}
-
-//go:embed all:web/*
-var f embed.FS
-
 // 初始化总路由
 func InitRouter() {
 	Router := gin.Default()
-	Router.StaticFS("/web", http.FS(NewResource()))
+
+	Router.Use(middleware.Serve("/", middleware.EmbedFolder(web.Static, "web"))) // targetPtah=web 是embed和web文件夹的相对路径
 	Router.Use(middleware.Cors())
-	r := Router.Group("/")
+	r := Router.Group("/api")
 	{
-		r.GET("ping", func(c *gin.Context) { c.JSON(200, "success") })
+		r.GET("/ping", func(c *gin.Context) { c.JSON(200, "success") })
 	}
 	//订阅
 	subRouter := r.Group("/sub")
 	{
-		subRouter.POST("addSub", api.AddSub)           // 添加订阅
-		subRouter.POST("deleteSub", api.DeleteSub)     // 删除订阅
-		subRouter.POST("getNodeList", api.GetNodeList) // 获取节点列表
-		subRouter.POST("getSubList", api.GetSubList)   // 获取订阅列表
-		subRouter.POST("updateSub", api.UpdateSub)     // 更新订阅
+		subRouter.POST("/addSub", api.AddSub)           // 添加订阅
+		subRouter.POST("/deleteSub", api.DeleteSub)     // 删除订阅
+		subRouter.POST("/getNodeList", api.GetNodeList) // 获取节点列表
+		subRouter.POST("/getSubList", api.GetSubList)   // 获取订阅列表
+		subRouter.POST("/updateSub", api.UpdateSub)     // 更新订阅
 	}
 	//节点
 	nodeRouter := r.Group("/node")
 	{
-		nodeRouter.POST("findNodeById", api.FindNodeById)       // 根据id 查节点
-		nodeRouter.POST("deleteNode", api.DeleteNode)           // 删除节点
-		nodeRouter.POST("updateNode", api.UpdateNode)           // 修改节点
-		nodeRouter.POST("newNode", api.NewNode)                 // 新建节点
-		nodeRouter.POST("tcping", api.Tcping)                   // tcping
-		nodeRouter.POST("getNodePool", api.GetNodePool)         // 获取节点池
-		nodeRouter.POST("joinNodePool", api.JoinNodePool)       // 加入节点池
-		nodeRouter.POST("deleteNodePool", api.DeleteNodePool)   // 从节点池删除节点
-		nodeRouter.POST("getEnabledNodes", api.GetEnabledNodes) // 获取激活的节点
-		nodeRouter.POST("setEnabledNode", api.SetEnabledNode)   // 设置激活的节点
-		nodeRouter.GET("testNodeDelay", api.TestNodeDelay)      // 节点访问网站的延迟
-		nodeRouter.GET("testNodeIP", api.TestNodeIP)            // 节点ip检测
+		nodeRouter.POST("/findNodeById", api.FindNodeById)       // 根据id 查节点
+		nodeRouter.POST("/deleteNode", api.DeleteNode)           // 删除节点
+		nodeRouter.POST("/updateNode", api.UpdateNode)           // 修改节点
+		nodeRouter.POST("/newNode", api.NewNode)                 // 新建节点
+		nodeRouter.POST("/tcping", api.Tcping)                   // tcping
+		nodeRouter.POST("/getNodePool", api.GetNodePool)         // 获取节点池
+		nodeRouter.POST("/joinNodePool", api.JoinNodePool)       // 加入节点池
+		nodeRouter.POST("/deleteNodePool", api.DeleteNodePool)   // 从节点池删除节点
+		nodeRouter.POST("/getEnabledNodes", api.GetEnabledNodes) // 获取激活的节点
+		nodeRouter.POST("/setEnabledNode", api.SetEnabledNode)   // 设置激活的节点
+		nodeRouter.GET("/testNodeDelay", api.TestNodeDelay)      // 节点访问网站的延迟
+		nodeRouter.GET("/testNodeIP", api.TestNodeIP)            // 节点ip检测
 
 	}
 	//shell
 	shellRouter := r.Group("/shell")
 	{
-		shellRouter.GET("getAllPackages", api.GetAllPackages)
-		shellRouter.POST("doShell", api.DoShell)
-		shellRouter.GET("startService", api.StartService)
-		shellRouter.GET("stopService", api.StopService)
-		shellRouter.POST("getProcessStatus", api.GetProcessStatus)
+		shellRouter.GET("/getAllPackages", api.GetAllPackages)
+		shellRouter.POST("/doShell", api.DoShell)
+		shellRouter.GET("/startService", api.StartService)
+		shellRouter.GET("/stopService", api.StopService)
+		shellRouter.POST("/getProcessStatus", api.GetProcessStatus)
 
 	}
 	//config
 	configRouter := r.Group("/shell")
 	{
-		configRouter.GET("getConfig", api.GetConfig)
-		configRouter.POST("updateConfig", api.UpdateConfig) // 修改配置
+		configRouter.GET("/getConfig", api.GetConfig)
+		configRouter.POST("/updateConfig", api.UpdateConfig) // 修改配置
 	}
 
 	srv := &http.Server{

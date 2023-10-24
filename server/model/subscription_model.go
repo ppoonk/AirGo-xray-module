@@ -25,13 +25,13 @@ func (ss *Subscription) ParseSub() error {
 	//去掉前后空格
 	ss.Url = strings.Trim(ss.Url, " \n")
 	var linkArr []string
-	if strings.HasPrefix(ss.Url, "http") { //sub
+	if strings.HasPrefix(ss.Url, "http") { //导入的订阅url
 		linkArr1, err := ss.ParseUrl()
 		if err != nil {
 			return err
 		}
 		linkArr = linkArr1
-	} else if strings.HasPrefix(ss.Url, "v") || strings.HasPrefix(ss.Url, "t") { //node
+	} else if len(ss.Url) > 30 { //导入的时base64节点或者vless，vmess，trojan开头的节点
 		//系统订阅
 		ss.ID = 1
 		linkArr = ss.ParseBase64(ss.Url)
@@ -87,7 +87,7 @@ func (ss *Subscription) ParseUrl() ([]string, error) {
 	return linkArr, nil
 }
 
-// 解析订阅文本
+// 解析base64文本
 func (ss *Subscription) ParseBase64(subtext string) []string {
 	var data string
 	//如果传进来vmess vless trojan开头的多个节点，则跳过base64解码
@@ -96,10 +96,7 @@ func (ss *Subscription) ParseBase64(subtext string) []string {
 	} else {
 		data = utils.SubBase64Decode(subtext)
 	}
-	s := strings.ReplaceAll(data, "\r\n", "\n")
-	s = strings.ReplaceAll(s, "\r", "\n")
-	list := strings.Split(strings.TrimRight(s, "\n"), "\n")
-	return list
+	return strings.Fields(data)
 }
 
 // 添加订阅

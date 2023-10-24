@@ -10,11 +10,6 @@ jobs:
       matrix:
         goos: [linux]
         goarch: [arm64,arm]
-        #         exclude: #
-        #           - goarch: arm64
-        #             goos: darwin
-        #           - goarch: arm
-        #             goos: darwin
         node-version: [18.16.0]
     steps:
       - uses: actions/checkout@v3
@@ -27,7 +22,8 @@ jobs:
           cd web
           npm install
           npm run build
-          mv web ../server/router
+          rm -rf /server/web/web
+          mv web /server/web/
       - name: Go dependence
         run: |
           cd server
@@ -53,15 +49,6 @@ jobs:
         run: |
           cd server
           go build -o airgo -ldflags='-s -w --extldflags "-static -fpic"' main.go
-      #      - uses: wangyoucao577/go-release-action@v1.38
-      #        with:
-      #          github_token: ${{ secrets.Action_Token }}
-      #          goos: ${{ matrix.goos }}
-      #          goarch: ${{ matrix.goarch }}
-      #          goversion: 1.19
-      #          binary_name: "AirGo"
-      #          project_path: "./server"
-      #          ldflags: -s -w --extldflags "-static -fpic"
       - name: Get version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
